@@ -10,6 +10,7 @@
 #define __sceneGraph__control__
 
 #include <stdio.h>
+#include "common.h"
 
 // Menu items
 enum MENU_TYPE

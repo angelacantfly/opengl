@@ -1,6 +1,5 @@
 #include <iostream>
-#include <glut/glut.h>
-#include <math.h>
+#include "common.h"
 #include "main.h"
 #include "control.h"
 
