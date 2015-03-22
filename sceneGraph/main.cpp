@@ -1,6 +1,9 @@
 #include <iostream>
 #include <glut/glut.h>
 #include <math.h>
+#include "main.h"
+#include "control.h"
+
 
 // function prototypes
 void display(void);
@@ -14,20 +17,14 @@ void drawArm(bool x);
 void drawHead();
 void drawEye(bool x);
 void drawFloor();
+void tileFloor(double x1, double y1, double x2, double y2, double r, double g, double b);
+
+
+void menu(int);
 
 void keyboard(unsigned char key, int x, int y);
 
 // global variables
-
-// window dimensions
-int windowWidth=600;
-int windowHeight=600;
-// position of snowman
-double snowmanX = 0.0;
-double snowmanZ = 0.0;
-// nod angle
-double theta = 0.0;
-
 using namespace std;
 
 // user controls position of snowman
@@ -73,6 +70,23 @@ int main(int argc, char **argv)
     // create window
     glutCreateWindow("My Third OpenGL program");
     
+    
+    
+    // Create a menu
+    glutCreateMenu(menu);
+    
+    // Add menu items
+    glutAddMenuEntry("Toggle Ambient Light", AMBIENT_LIGHT);
+    glutAddMenuEntry("Toggle Point Light", POINT_LIGHT);
+    glutAddMenuEntry("Help with camera control", HELP_CAMERA);
+    
+    // Associate a mouse button with menu
+    glutAttachMenu(GLUT_RIGHT_BUTTON);
+    
+    
+    
+    
+    
     // register callback functions
     glutDisplayFunc(display);
     glutReshapeFunc(reshape);
@@ -104,6 +118,38 @@ void init()
     
 }
 
+void menu(int item)
+{
+    switch (item)
+    {
+       
+        case AMBIENT_LIGHT:
+        {
+            AMBIENT = 1 - AMBIENT;
+            cout << "Toggle ambient light: " << (AMBIENT?"ON":"OFF") << endl;
+            break;
+        }
+        case POINT_LIGHT:
+        {
+            POINTLIGHT = 1 - POINTLIGHT;
+            cout << "Toggle point light: " << (POINTLIGHT?"ON":"OFF") << endl;
+            break;
+        }
+        case HELP_CAMERA:
+        {
+            cout << "How to use the camera control: " << endl;
+            break;
+        }
+        default:
+        {       /* Nothing */       }
+            break;
+    }
+    
+    glutPostRedisplay();
+    
+    return;
+}
+
 void reshape(int width, int height)
 {
     if (width<height)
@@ -125,6 +171,8 @@ void display()
     gluLookAt(0, 15, 30, 0, 0, 0, 0, 1, 0);
     
     drawFloor();
+
+    
     drawSnowman();
     
     glutSwapBuffers();
@@ -151,12 +199,25 @@ void drawBottom(){
 }
 
 void drawFloor() {
-    glColor3f(1,1,1);       // white floor
-    glRotatef(-45,1,0,0);
-
-    glRectf(-5, -5, 5, 5);  // centered at origin (y-plane)
+    double originx = -5;
+    double originy = -5;
+    int color = 0;
+    glRotatef(-90,1,0,0);
+    for (int row = 0 ; row < 5; ++row)
+        for (int col = 0; col < 5; ++ col)
+        {
+            color ++;
+            tileFloor(originx + 2 * row, originy + 2 * col, originx + 2 * (row + 1), originy + 2* (col + 1), color%2, color%2, color%2);
+        }
+    glRotatef(90,1,0,0);
 }
 
+void tileFloor(double x1, double y1, double x2, double y2, double r, double g, double b)
+{
+    glColor3f(r, g, b);
+//    glRotatef(-45,1,0,0);
+    glRectf(x1, y1, x2, y2);
+}
 
 void drawMiddle() {
     GLfloat radius=1;
