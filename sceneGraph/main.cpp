@@ -9,37 +9,14 @@ using namespace std;
 double snowmanX = 0.0;
 double snowmanZ = 0.0;
 double theta =  0.0;
+double phi = 0.0;
 bool AMBIENT = false;
 bool POINTLIGHT = false;
+double CAMERA_X = 20*sin(phi*3.14/180.0);
+double CAMERA_Z = 20*cos(phi*3.14/180.0);
 
-// user controls position of snowman
-void special(int key, int x, int y)
-{
-    if (key == GLUT_KEY_LEFT) {
-        snowmanX--;
-    } else if (key == GLUT_KEY_RIGHT) {
-        snowmanX++;
-    } else if (key == GLUT_KEY_DOWN) {
-        snowmanZ--;
-    } else if (key == GLUT_KEY_UP) {
-        snowmanZ++;
-    }
-    
-    glutPostRedisplay();
-}
 
-// user controls snowman nod
-void keyboard(unsigned char key, int x, int y)
-{
-    // nod up
-    if (key == 'x')
-        theta += 5;
-    // nod down
-    if (key == 'c')
-        theta -= 5;
-    
-    glutPostRedisplay();
-}
+
 
 int main(int argc, char **argv)
 {
@@ -65,6 +42,8 @@ int main(int argc, char **argv)
     glutReshapeFunc(reshape);
     glutSpecialFunc(special);
     glutKeyboardFunc(keyboard);
+    glutMouseFunc(mouse);
+    glutMotionFunc(motion);
     
     // initalize opengl parameters
     init();
@@ -127,7 +106,8 @@ void display()
     // initialize modelview matrix
     glMatrixMode(GL_MODELVIEW_MATRIX);
     glLoadIdentity();
-    gluLookAt(0, 15, 30, 0, 0, 0, 0, 1, 0);
+    gluLookAt(CAMERA_X, 15, CAMERA_Z, 0, 0, 0, 0, 1, 0);
+    
     
     
     drawFloor();

@@ -13,15 +13,19 @@
 // window dimensions
 const int windowWidth=600;
 const int windowHeight=600;
+const double CAMERA_SPIN = 90;
+const double CAMERA_BIG_SPIN = 420;
 
 
 // position of snowman
 extern double snowmanX;
 extern double snowmanZ;
-
+extern double CAMERA_X;
+extern double CAMERA_Z;
 
 // nod angle
 extern double theta;
+extern double phi;
 extern bool AMBIENT;
 extern bool POINTLIGHT;
 

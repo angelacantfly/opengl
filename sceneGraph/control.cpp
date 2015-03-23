@@ -64,3 +64,94 @@ void menu(int item)
     return;
 }
 
+void mouse(int button, int state, int x, int y)
+{
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
+        cout << "Left click with cursor at" << x << " " << y << endl;
+}
+
+void motion(int x, int y)
+{
+    cout << "Mouse at " << x << " " << y << endl;
+    phi += (double)x/ (double)windowWidth;
+    glutPostRedisplay();
+}
+
+// user controls position of snowman
+void special(int key, int x, int y)
+{
+    
+    switch (key) {
+        case GLUT_KEY_LEFT:
+            snowmanX--;
+            break;
+        case GLUT_KEY_RIGHT:
+            snowmanX++;
+            break;
+        case GLUT_KEY_DOWN:
+            snowmanZ--;
+            break;
+        case GLUT_KEY_UP:
+            snowmanZ++;
+            break;
+            
+        default:
+            break;
+    }
+    glutPostRedisplay();
+}
+
+// user controls snowman nod
+void keyboard(unsigned char key, int x, int y)
+{
+    
+    switch (key) {
+        case 'c':
+            theta += 5;
+            break;
+        case 'v':
+            theta -= 5;
+            break;
+        case 'Z':
+            // zoom in
+            CAMERA_Z = CAMERA_Z - 1.0;
+            cout << "zooming in." << endl;
+            break;
+        case 'z':
+            // zoom out
+            CAMERA_Z = CAMERA_Z + 1.0;
+            cout << "zooming in." << endl;
+            break;
+        case 'a':
+            // camera spin left
+            phi -= (double)CAMERA_SPIN/ (double)windowWidth;
+            CAMERA_X = 20*sin(phi*3.14/180.0);
+            CAMERA_Z = 20*cos(phi*3.14/180.0);
+            cout << "spin left: " << phi << endl;
+            break;
+        case 'A':
+            // camera spin left
+            phi -= (double)CAMERA_BIG_SPIN/ (double)windowWidth;
+            CAMERA_X = 20*sin(phi*3.14/180.0);
+            CAMERA_Z = 20*cos(phi*3.14/180.0);
+            cout << "fast spin left: " << phi << endl;
+            break;
+        case 's':
+            // camera spin right
+            phi += (double)CAMERA_SPIN/ (double)windowWidth;
+            CAMERA_X = 20*sin(phi*3.14/180.0);
+            CAMERA_Z = 20*cos(phi*3.14/180.0);
+            cout << "spin right: " << phi << endl;
+            break;
+        case 'S':
+            // camera spin right
+            phi += (double)CAMERA_BIG_SPIN/ (double)windowWidth;
+            CAMERA_X = 20*sin(phi*3.14/180.0);
+            CAMERA_Z = 20*cos(phi*3.14/180.0);
+            cout << "fast spin right: " << phi << endl;
+            break;
+        default:
+            break;
+    }
+    glutPostRedisplay();
+}
