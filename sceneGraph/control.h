@@ -21,6 +21,6 @@ enum MENU_TYPE
 };
 
 
-void menu(int);
+//void menu(int);
 
 #endif /* defined(__sceneGraph__control__) */

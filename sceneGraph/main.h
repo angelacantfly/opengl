@@ -8,6 +8,7 @@
 
 #ifndef sceneGraph_main_hpp
 #define sceneGraph_main_hpp
+#include "common.h"
 // window dimensions
 int windowWidth=600;
 int windowHeight=600;

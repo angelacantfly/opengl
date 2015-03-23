@@ -1,5 +1,4 @@
 #include <iostream>
-#include "common.h"
 #include "main.h"
 #include "control.h"
 
@@ -110,7 +109,24 @@ void init()
     glLoadIdentity();
     
     // initialize background color to black
-    glClearColor(0,0,0,0);
+    glClearColor(0,0.5,0.5,0);
+    
+    // enable light0 and lighting
+    glEnable(GL_LIGHT0);
+    glEnable(GL_LIGHTING);
+    
+    glEnable(GL_COLOR_MATERIAL);
+    
+    // position of light0
+    float pointLight = 0;
+    if (POINTLIGHT) pointLight = 1;
+    GLfloat lightPosition[]={3,1,1,pointLight};
+    glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
+    
+    // set color of light0
+    GLfloat white[] = {1,1,1,0};		      // light color
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, white);   // set diffuse light color
+    glLightfv(GL_LIGHT0, GL_SPECULAR, white);  // set specular light color
     
     // enable depth buffering
     glEnable(GL_DEPTH_TEST);
@@ -132,6 +148,10 @@ void menu(int item)
         {
             POINTLIGHT = 1 - POINTLIGHT;
             cout << "Toggle point light: " << (POINTLIGHT?"ON":"OFF") << endl;
+            float point = 0 ;
+            if (POINTLIGHT) point = 1;
+            GLfloat lightPosition[]={3,1,1,point};
+            glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
             break;
         }
         case HELP_CAMERA:
@@ -169,8 +189,18 @@ void display()
     glLoadIdentity();
     gluLookAt(0, 15, 30, 0, 0, 0, 0, 1, 0);
     
+//    // enable light0 and lighting
+//    glEnable(GL_LIGHT0);
+////    glEnable(GL_LIGHTING);
+//    // position of light0
+//    
+//    float pointLight = 0;
+//    if (POINTLIGHT) pointLight = 1;
+//    GLfloat lightPosition[]={1,1,1,pointLight};
+//    glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
+    
+    
     drawFloor();
-
     
     drawSnowman();
     
