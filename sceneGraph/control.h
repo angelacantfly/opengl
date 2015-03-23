@@ -20,7 +20,7 @@ enum MENU_TYPE
     HELP_CAMERA
 };
 
-
-//void menu(int);
+void make_menu();
+void menu(int);
 
 #endif /* defined(__sceneGraph__control__) */

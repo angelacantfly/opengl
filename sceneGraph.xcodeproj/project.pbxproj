@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		292D10B91ABF6680007A4F2F /* control.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 292D10B71ABF6680007A4F2F /* control.cpp */; settings = {COMPILER_FLAGS = "-w"; }; };
+		292D10BF1ABFC554007A4F2F /* avatar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 292D10BD1ABFC554007A4F2F /* avatar.cpp */; };
 		90910D091AB22E850089FCBA /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 90910D081AB22E850089FCBA /* main.cpp */; settings = {COMPILER_FLAGS = "-w"; }; };
 		90910D101AB22E930089FCBA /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90910D0F1AB22E930089FCBA /* OpenGL.framework */; };
 		90910D121AB22E980089FCBA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90910D111AB22E980089FCBA /* Cocoa.framework */; };
@@ -31,6 +32,8 @@
 		292D10B81ABF6680007A4F2F /* control.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = control.h; sourceTree = "<group>"; };
 		292D10BA1ABF72CE007A4F2F /* main.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = main.h; sourceTree = "<group>"; };
 		292D10BC1ABF78E7007A4F2F /* common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
+		292D10BD1ABFC554007A4F2F /* avatar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = avatar.cpp; sourceTree = "<group>"; };
+		292D10BE1ABFC554007A4F2F /* avatar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = avatar.h; sourceTree = "<group>"; };
 		90910D051AB22E850089FCBA /* sceneGraph */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = sceneGraph; sourceTree = BUILT_PRODUCTS_DIR; };
 		90910D081AB22E850089FCBA /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		90910D0F1AB22E930089FCBA /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
@@ -75,6 +78,8 @@
 			isa = PBXGroup;
 			children = (
 				90910D081AB22E850089FCBA /* main.cpp */,
+				292D10BD1ABFC554007A4F2F /* avatar.cpp */,
+				292D10BE1ABFC554007A4F2F /* avatar.h */,
 				292D10BA1ABF72CE007A4F2F /* main.h */,
 				292D10B71ABF6680007A4F2F /* control.cpp */,
 				292D10B81ABF6680007A4F2F /* control.h */,
@@ -139,6 +144,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				292D10BF1ABFC554007A4F2F /* avatar.cpp in Sources */,
 				90910D091AB22E850089FCBA /* main.cpp in Sources */,
 				292D10B91ABF6680007A4F2F /* control.cpp in Sources */,
 			);

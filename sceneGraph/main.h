@@ -9,21 +9,27 @@
 #ifndef sceneGraph_main_hpp
 #define sceneGraph_main_hpp
 #include "common.h"
+
 // window dimensions
-int windowWidth=600;
-int windowHeight=600;
+const int windowWidth=600;
+const int windowHeight=600;
 
 
 // position of snowman
-double snowmanX = 0.0;
-double snowmanZ = 0.0;
+extern double snowmanX;
+extern double snowmanZ;
 
 
 // nod angle
-double theta = 0.0;
+extern double theta;
+extern bool AMBIENT;
+extern bool POINTLIGHT;
 
 
-extern bool AMBIENT = false;
-extern bool POINTLIGHT = false;
-
+void display(void);
+void reshape(int width, int height);
+void init();
+void drawSnowman();
+void menu(int);
+void keyboard(unsigned char key, int x, int y);
 #endif
