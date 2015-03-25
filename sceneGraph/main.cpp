@@ -78,11 +78,13 @@ void init()
     glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
     
     // set color of light0
+    GLfloat ambientWhite[] = {0.2,0.2,0.2,0.2};
     GLfloat white[] = {1,1,1,0};		      // light color
     GLfloat light_ambient[] = { 0.2, 0.2, 0.2, 0.2}; // ambient
     glLightfv(GL_LIGHT0, GL_DIFFUSE, white);   // set diffuse light color
     glLightfv(GL_LIGHT0, GL_SPECULAR, white);  // set specular light color
-    if (AMBIENT) glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
+    glLightfv(GL_LIGHT0, GL_AMBIENT, ambientWhite);
+
     
     // enable depth buffering
     glEnable(GL_DEPTH_TEST);
