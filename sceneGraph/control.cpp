@@ -51,7 +51,17 @@ void menu(int item)
         }
         case HELP_CAMERA:
         {
-            cout << "How to use the camera control: " << endl;
+            cout << "Camera control\n\
+            \n\
+            action         result\n\
+            ------         ------\n\
+            z              zoom out\n\
+            Z      		   zoom in\n\
+            a          	   spin left\n\
+            A    		   fast spin left\n\
+            s              spin right\n\
+            S              fast spin right"
+            << endl;
             break;
         }
         default:
