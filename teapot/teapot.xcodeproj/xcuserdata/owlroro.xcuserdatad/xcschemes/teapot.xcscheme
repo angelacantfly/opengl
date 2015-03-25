@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "293206901AC2545000B76B25"
+               BlueprintIdentifier = "293206A91AC25DBC00B76B25"
                BuildableName = "teapot"
                BlueprintName = "teapot"
                ReferencedContainer = "container:teapot.xcodeproj">
@@ -32,7 +32,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "293206901AC2545000B76B25"
+            BlueprintIdentifier = "293206A91AC25DBC00B76B25"
             BuildableName = "teapot"
             BlueprintName = "teapot"
             ReferencedContainer = "container:teapot.xcodeproj">
@@ -52,7 +52,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "293206901AC2545000B76B25"
+            BlueprintIdentifier = "293206A91AC25DBC00B76B25"
             BuildableName = "teapot"
             BlueprintName = "teapot"
             ReferencedContainer = "container:teapot.xcodeproj">
@@ -71,7 +71,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "293206901AC2545000B76B25"
+            BlueprintIdentifier = "293206A91AC25DBC00B76B25"
             BuildableName = "teapot"
             BlueprintName = "teapot"
             ReferencedContainer = "container:teapot.xcodeproj">
