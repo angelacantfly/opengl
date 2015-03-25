@@ -74,13 +74,15 @@ void init()
     // position of light0
     float pointLight = 0;
     if (POINTLIGHT) pointLight = 1;
-    GLfloat lightPosition[]={3,1,1,pointLight};
+    GLfloat lightPosition[]={0,1,0,pointLight};
     glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
     
     // set color of light0
+    GLfloat ambientWhite[] = {0.2,0.2,0.2,0.2};
     GLfloat white[] = {1,1,1,0};		      // light color
     glLightfv(GL_LIGHT0, GL_DIFFUSE, white);   // set diffuse light color
     glLightfv(GL_LIGHT0, GL_SPECULAR, white);  // set specular light color
+    glLightfv(GL_LIGHT0, GL_AMBIENT, ambientWhite);
     
     // enable depth buffering
     glEnable(GL_DEPTH_TEST);
