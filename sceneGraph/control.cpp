@@ -84,6 +84,7 @@ void motion(int x, int y)
 {
     cout << "Mouse at " << x << " " << y << endl;
     phi += (double)x/ (double)windowWidth;
+    beta += (double)y/ (double)windowHeight;
     glutPostRedisplay();
 }
 

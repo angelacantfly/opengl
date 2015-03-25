@@ -26,6 +26,7 @@ extern double CAMERA_Z;
 // nod angle
 extern double theta;
 extern double phi;
+extern double beta;
 extern bool AMBIENT;
 extern bool POINTLIGHT;
 

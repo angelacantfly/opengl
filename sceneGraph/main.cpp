@@ -10,11 +10,12 @@ double snowmanX = 0.0;
 double snowmanZ = 0.0;
 double theta =  0.0;
 double phi = 0.0;
+double beta = 0.0;
 bool AMBIENT = false;
 bool POINTLIGHT = false;
 double CAMERA_X = 20*sin(phi*3.14/180.0);
 double CAMERA_Z = 20*cos(phi*3.14/180.0);
-
+double CAMERA_Y = 15;
 
 
 
@@ -110,7 +111,7 @@ void display()
     // initialize modelview matrix
     glMatrixMode(GL_MODELVIEW_MATRIX);
     glLoadIdentity();
-    gluLookAt(CAMERA_X, 15, CAMERA_Z, 0, 0, 0, 0, 1, 0);
+    gluLookAt(CAMERA_X, CAMERA_Y, CAMERA_Z, 0, 0, 0, 0, 1, 0);
     
     // Toggle Ambient Light
     if (AMBIENT)
