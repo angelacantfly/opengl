@@ -10,12 +10,12 @@ double snowmanX = 0.0;
 double snowmanZ = 0.0;
 double theta =  0.0;
 double phi = 0.0;
-double beta = 0.0;
+double beta = 15;
 bool AMBIENT = false;
 bool POINTLIGHT = false;
 double CAMERA_X = 20*sin(phi*3.14/180.0);
 double CAMERA_Z = 20*cos(phi*3.14/180.0);
-double CAMERA_Y = 15;
+double CAMERA_Y = 50*tan(beta*3.14/180.0);
 
 
 

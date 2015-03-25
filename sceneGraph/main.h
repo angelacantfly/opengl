@@ -22,6 +22,7 @@ extern double snowmanX;
 extern double snowmanZ;
 extern double CAMERA_X;
 extern double CAMERA_Z;
+extern double CAMERA_Y;
 
 // nod angle
 extern double theta;

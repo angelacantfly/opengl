@@ -59,8 +59,12 @@ void menu(int item)
             Z      		   zoom in\n\
             a          	   spin left\n\
             A    		   fast spin left\n\
-            s              spin right\n\
-            S              fast spin right"
+            d              spin right\n\
+            D              fast spin right\n\
+            w              look up\n\
+            W              fast look up\n\
+            s              look down\n\
+            S              fast look down"
             << endl;
             break;
         }
@@ -147,19 +151,45 @@ void keyboard(unsigned char key, int x, int y)
             CAMERA_Z = 20*cos(phi*3.14/180.0);
             cout << "fast spin left: " << phi << endl;
             break;
-        case 's':
+        case 'd':
             // camera spin right
             phi += (double)CAMERA_SPIN/ (double)windowWidth;
             CAMERA_X = 20*sin(phi*3.14/180.0);
             CAMERA_Z = 20*cos(phi*3.14/180.0);
             cout << "spin right: " << phi << endl;
             break;
-        case 'S':
+        case 'D':
             // camera spin right
             phi += (double)CAMERA_BIG_SPIN/ (double)windowWidth;
             CAMERA_X = 20*sin(phi*3.14/180.0);
             CAMERA_Z = 20*cos(phi*3.14/180.0);
             cout << "fast spin right: " << phi << endl;
+            break;
+        case 'w':
+            // camera look up
+            beta += (double)CAMERA_SPIN/ (double)windowHeight;
+            CAMERA_Y = 50*tan(beta*3.14/180.0);
+            cout << "CAMERA_Y : " << CAMERA_Y<<endl;
+            cout << "look up: " << beta << endl;
+            break;
+        case 'W':
+            // camera look up
+            beta += (double)CAMERA_BIG_SPIN/ (double)windowHeight;
+            CAMERA_Y = 50*tan(beta*3.14/180.0);
+            cout << "CAMERA_Y : " << CAMERA_Y<<endl;
+            cout << "fast look up: " << beta << endl;
+            break;
+        case 's':
+            beta -= (double)CAMERA_SPIN/ (double)windowHeight;
+            CAMERA_Y = 50*tan(beta*3.14/180.0);
+            cout << "CAMERA_Y : " << CAMERA_Y<<endl;
+            cout << "look down: " << beta << endl;
+            break;
+        case 'S':
+            beta -= (double)CAMERA_BIG_SPIN/ (double)windowHeight;
+            CAMERA_Y = 50*tan(beta*3.14/180.0);
+            cout << "CAMERA_Y : " << CAMERA_Y<<endl;
+            cout << "fast look down: " << beta << endl;
             break;
         default:
             break;
