@@ -34,7 +34,9 @@ extern bool POINTLIGHT;
 void display(void);
 void reshape(int width, int height);
 void init();
-void drawSnowman();
 void menu(int);
 void keyboard(unsigned char key, int x, int y);
+
+void drawSnowman();
+
 #endif

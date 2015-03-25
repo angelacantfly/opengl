@@ -76,6 +76,7 @@ void drawHead() {
     glRotatef(theta,1,0,0);
     glutSolidSphere(radius*0.5, 20, 20);
     
+    drawTeapot(radius);
     drawEye(true);  // left eye
     drawEye(false); // right eye
     
@@ -92,5 +93,15 @@ void drawEye(bool isLeft) {
     else    glTranslatef(.25,0,0.5);
     
     glutSolidSphere(radius*0.5, 20, 20);
+    glPopMatrix();
+}
+void drawTeapot(GLfloat radius)
+{
+    GLfloat purple[] = {0.5,0,0.5};
+    glColor3fv(purple);
+    glPushMatrix();
+    glTranslatef(0,radius/2,0);
+    glScalef(.1,.1,.1);
+    glutSolidTeapot(3);
     glPopMatrix();
 }

@@ -132,6 +132,8 @@ void display()
     glutSwapBuffers();
 }
 
+
+
 void drawSnowman() {
     // allow user control to move snowman
     glTranslatef(snowmanX,0,snowmanZ);

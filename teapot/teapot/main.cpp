@@ -87,6 +87,7 @@ void table()
     leg(.05);
     glPopMatrix();
     
+    
     glPushMatrix();
     glTranslatef(150,110,0);
     glScalef(.1,.1,.1);
@@ -100,7 +101,7 @@ void display()
     float pos[] = {200,200,0};
     float dif[] = {.3,.3,.3,3};
     float spe[] = {1,1,1,1};
-    float amb[] = {1,1,1,0};
+    float amb[] = {0.1,0.1,0.1,0};
     glLightfv(GL_LIGHT0,GL_POSITION,pos);
     glLightfv(GL_LIGHT0,GL_DIFFUSE,dif);
     glLightfv(GL_LIGHT0,GL_AMBIENT,amb);
