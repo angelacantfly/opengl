@@ -74,13 +74,15 @@ void init()
     // position of light0
     float pointLight = 0;
     if (POINTLIGHT) pointLight = 1;
-    GLfloat lightPosition[]={3,1,1,pointLight};
+    GLfloat lightPosition[]={0,1,0,pointLight};
     glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
     
     // set color of light0
     GLfloat white[] = {1,1,1,0};		      // light color
+    GLfloat light_ambient[] = { 0.2, 0.2, 0.2, 0.2}; // ambient
     glLightfv(GL_LIGHT0, GL_DIFFUSE, white);   // set diffuse light color
     glLightfv(GL_LIGHT0, GL_SPECULAR, white);  // set specular light color
+    if (AMBIENT) glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
     
     // enable depth buffering
     glEnable(GL_DEPTH_TEST);
@@ -108,7 +110,17 @@ void display()
     glLoadIdentity();
     gluLookAt(CAMERA_X, 15, CAMERA_Z, 0, 0, 0, 0, 1, 0);
     
-    
+    // Toggle Ambient Light
+    if (AMBIENT)
+    {
+        GLfloat light_ambient[] = { 0.2, 0.2, 0.2, 0.2};
+        glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
+    }
+    else
+    {
+        GLfloat no_ambient[] = {0,0,0,0};
+        glLightfv(GL_LIGHT0, GL_AMBIENT, no_ambient);
+    }
     
     drawFloor();
     
