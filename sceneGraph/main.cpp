@@ -125,6 +125,12 @@ void display()
         glLightfv(GL_LIGHT0, GL_AMBIENT, no_ambient);
     }
     
+    // TOGGLE POINT LIGHT
+    float pointLight = 0;
+    if (POINTLIGHT) pointLight = 1;
+    GLfloat lightPosition[]={0,3,0,pointLight};
+    glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
+    
     drawFloor();
     
     drawSnowman();

@@ -21,6 +21,7 @@ void drawBottom(){
 }
 
 void drawFloor() {
+    glNormal3f(0, 1, 0);
     double originx = -5;
     double originy = -5;
     int color = 0;
