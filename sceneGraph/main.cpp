@@ -6,11 +6,15 @@
 // global variables
 using namespace std;
 
-double snowmanX = 0.0;
-double snowmanZ = 0.0;
+double AVATAR_POS_X = 0.0;
+double AVATAR_POS_Z = 0.0;
 double theta =  0.0;
 double phi = 0.0;
 double beta = 15;
+double HEADLAMPHEIGHT = 0;
+double WAVE_SWIM = 0;
+double WAVE_UP_DOWN = 0;
+
 bool AMBIENT = false;
 bool POINTLIGHT = false;
 double CAMERA_X = 20*sin(phi*3.14/180.0);
@@ -87,6 +91,7 @@ void init()
     glLightfv(GL_LIGHT0, GL_AMBIENT, ambientWhite);
 
     
+    
     // enable depth buffering
     glEnable(GL_DEPTH_TEST);
     
@@ -127,7 +132,8 @@ void display()
     
     drawFloor();
     
-    drawSnowman();
+//    drawSnowman();
+    drawGenie();
     
     glutSwapBuffers();
 }
@@ -136,7 +142,8 @@ void display()
 
 void drawSnowman() {
     // allow user control to move snowman
-    glTranslatef(snowmanX,0,snowmanZ);
+    
+    glTranslatef(AVATAR_POS_X,0,AVATAR_POS_Z);
 
     // draw snowman
     drawBottom();
@@ -144,4 +151,11 @@ void drawSnowman() {
     drawHead();
 }
 
+void drawGenie() {
+    glTranslatef(AVATAR_POS_X,0,AVATAR_POS_Z);
+
+    drawGenieBottom();
+    drawGenieMiddle();
+    drawHead();
+}
 

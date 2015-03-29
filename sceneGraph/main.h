@@ -18,11 +18,14 @@ const double CAMERA_BIG_SPIN = 420;
 
 
 // position of snowman
-extern double snowmanX;
-extern double snowmanZ;
+extern double AVATAR_POS_X;
+extern double AVATAR_POS_Z;
 extern double CAMERA_X;
 extern double CAMERA_Z;
 extern double CAMERA_Y;
+extern double HEADLAMPHEIGHT;
+extern double WAVE_SWIM;
+extern double WAVE_UP_DOWN;
 
 // nod angle
 extern double theta;
@@ -39,5 +42,7 @@ void menu(int);
 void keyboard(unsigned char key, int x, int y);
 
 void drawSnowman();
+void drawGenie();
+
 
 #endif
