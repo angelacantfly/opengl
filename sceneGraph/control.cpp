@@ -98,16 +98,16 @@ void special(int key, int x, int y)
     
     switch (key) {
         case GLUT_KEY_LEFT:
-            snowmanX--;
+            AVATAR_POS_X--;
             break;
         case GLUT_KEY_RIGHT:
-            snowmanX++;
+            AVATAR_POS_X++;
             break;
         case GLUT_KEY_DOWN:
-            snowmanZ--;
+            AVATAR_POS_Z--;
             break;
         case GLUT_KEY_UP:
-            snowmanZ++;
+            AVATAR_POS_Z++;
             break;
             
         default:
@@ -190,6 +190,18 @@ void keyboard(unsigned char key, int x, int y)
             CAMERA_Y = 50*tan(beta*3.14/180.0);
             cout << "CAMERA_Y : " << CAMERA_Y<<endl;
             cout << "fast look down: " << beta << endl;
+            break;
+        case 'm':
+            WAVE_SWIM -= 5;
+            break;
+        case 'M':
+            WAVE_SWIM += 5;
+            break;
+        case 'k':
+            WAVE_UP_DOWN -=5;
+            break;
+        case 'K':
+            WAVE_UP_DOWN +=5;
             break;
         default:
             break;
