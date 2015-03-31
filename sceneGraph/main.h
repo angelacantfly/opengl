@@ -16,24 +16,30 @@ const int windowHeight=600;
 const double CAMERA_SPIN = 90;
 const double CAMERA_BIG_SPIN = 420;
 
-
 // position of snowman
 extern double AVATAR_POS_X;
 extern double AVATAR_POS_Z;
+
+// position of camera (user controlled)
 extern double CAMERA_X;
 extern double CAMERA_Z;
 extern double CAMERA_Y;
+
+// position of head lamp
 extern double HEADLAMPHEIGHT;
-extern double WAVE_SWIM;
-extern double WAVE_UP_DOWN;
+
+// arm positions
+extern double WAVE_SWIM;    // front to back
+extern double WAVE_UP_DOWN; // up and down
 
 // nod angle
 extern double theta;
 extern double phi;
 extern double beta;
+
+// toggle lights
 extern bool AMBIENT;
 extern bool POINTLIGHT;
-
 
 void display(void);
 void reshape(int width, int height);
@@ -41,6 +47,7 @@ void init();
 void menu(int);
 void keyboard(unsigned char key, int x, int y);
 
+// robots
 void drawSnowman();
 void drawGenie();
 

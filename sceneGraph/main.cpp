@@ -6,21 +6,26 @@
 // global variables
 using namespace std;
 
+// location of robot
 double AVATAR_POS_X = 0.0;
 double AVATAR_POS_Z = 0.0;
-double theta =  0.0;
-double phi = 0.0;
-double beta = 15;
-double HEADLAMPHEIGHT = 0;
-double WAVE_SWIM = 0;
-double WAVE_UP_DOWN = 0;
 
+double theta =  0.0;        // how much the robot nods
+double phi = 0.0;           // camera view: left to right
+double beta = 15;           // camera view: up and down
+
+double HEADLAMPHEIGHT = 0;  // position of head lamp
+double WAVE_SWIM = 0;       // how much robot moves arms (front to back)
+double WAVE_UP_DOWN = 0;    // how much robot moves arms (up and down)
+
+// toggle lighting
 bool AMBIENT = false;
 bool POINTLIGHT = false;
-double CAMERA_X = 20*sin(phi*3.14/180.0);
-double CAMERA_Z = 20*cos(phi*3.14/180.0);
-double CAMERA_Y = 50*tan(beta*3.14/180.0);
 
+// how much user controls camera
+double CAMERA_X = 20*sin(phi*3.14/180.0);   // left and right
+double CAMERA_Z = 20*cos(phi*3.14/180.0);   // zoom in and out
+double CAMERA_Y = 50*tan(beta*3.14/180.0);  // up and down
 
 
 int main(int argc, char **argv)
@@ -31,16 +36,13 @@ int main(int argc, char **argv)
     // set window size
     glutInitWindowSize(windowWidth,windowHeight);
     
-    
     // establish glut display parameters
     glutInitDisplayMode(GLUT_DOUBLE   | GLUT_RGB  |GLUT_DEPTH);
     
     // create window
     glutCreateWindow("My Third OpenGL program");
     
-    
     make_menu();
-    
     
     // register callback functions
     glutDisplayFunc(display);
@@ -89,12 +91,9 @@ void init()
     glLightfv(GL_LIGHT0, GL_DIFFUSE, white);   // set diffuse light color
     glLightfv(GL_LIGHT0, GL_SPECULAR, white);  // set specular light color
     glLightfv(GL_LIGHT0, GL_AMBIENT, ambientWhite);
-
-    
     
     // enable depth buffering
     glEnable(GL_DEPTH_TEST);
-    
 }
 
 
@@ -109,7 +108,6 @@ void reshape(int width, int height)
 
 void display()
 {
-    
     // clear buffers
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
@@ -118,7 +116,7 @@ void display()
     glLoadIdentity();
     gluLookAt(CAMERA_X, CAMERA_Y, CAMERA_Z, 0, 0, 0, 0, 1, 0);
     
-    // Toggle Ambient Light
+    // toggle Ambient Light
     if (AMBIENT)
     {
         GLfloat light_ambient[] = { 0.2, 0.2, 0.2, 0.2};
@@ -137,8 +135,6 @@ void display()
     glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
     
     drawFloor();
-    
-//    drawSnowman();
     drawGenie();
     
     glutSwapBuffers();
@@ -160,6 +156,7 @@ void drawSnowman() {
 void drawGenie() {
     glTranslatef(AVATAR_POS_X,0,AVATAR_POS_Z);
 
+    // draw genie's body parts
     drawGenieBottom();
     drawGenieMiddle();
     drawHead();
