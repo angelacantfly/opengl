@@ -11,8 +11,8 @@ double AVATAR_POS_X = 0.0;
 double AVATAR_POS_Z = 0.0;
 
 double theta =  0.0;        // how much the robot nods
-double phi = 0.0;           // camera view: left to right
-double beta = 15;           // camera view: up and down
+double phi = 0.0 + EPSLON;  // camera view: up and down
+double beta = 15;           // camera view: left to right
 
 double HEADLAMPHEIGHT = 0;  // position of head lamp
 double WAVE_SWIM = 0;       // how much robot moves arms (front to back)
@@ -23,10 +23,10 @@ bool AMBIENT = false;
 bool POINTLIGHT = false;
 
 // how much user controls camera
-double CAMERA_X = 20*sin(phi*3.14/180.0);   // left and right
-double CAMERA_Z = 20*cos(phi*3.14/180.0);   // zoom in and out
-double CAMERA_Y = 50*tan(beta*3.14/180.0);  // up and down
-
+double VIEW_RADIUS = 20;
+double CAMERA_Z = VIEW_RADIUS * sin(phi) * cos(beta); // zoom in and out
+double CAMERA_X = VIEW_RADIUS * sin(phi) * sin(beta); // left and right
+double CAMERA_Y = VIEW_RADIUS * cos(phi);             // up and down
 
 int main(int argc, char **argv)
 {

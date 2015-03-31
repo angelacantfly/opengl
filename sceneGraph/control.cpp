@@ -114,6 +114,13 @@ void special(int key, int x, int y)
     glutPostRedisplay();
 }
 
+void recalculateCameraPos()
+{
+    CAMERA_Y = VIEW_RADIUS * cos(phi);
+    CAMERA_X = VIEW_RADIUS * sin(phi) * sin(beta);
+    CAMERA_Z = VIEW_RADIUS * sin(phi) * cos(beta);
+}
+
 // user controls snowman nod
 void keyboard(unsigned char key, int x, int y)
 {
@@ -127,67 +134,71 @@ void keyboard(unsigned char key, int x, int y)
             break;
         case 'Z':
             // zoom in
-            CAMERA_Z = CAMERA_Z - 1.0;
+            VIEW_RADIUS -=3;
+            if (VIEW_RADIUS < 0)
+                VIEW_RADIUS = 0 + EPSLON;
+            recalculateCameraPos();
             cout << "zooming in." << endl;
             break;
         case 'z':
             // zoom out
-            CAMERA_Z = CAMERA_Z + 1.0;
-            cout << "zooming in." << endl;
+            VIEW_RADIUS += 3;
+            recalculateCameraPos();
+            cout << "zooming out." << endl;
             break;
         case 'a':
             // camera spin left
-            phi -= (double)CAMERA_SPIN/ (double)windowWidth;
-            CAMERA_X = 20*sin(phi*3.14/180.0);
-            CAMERA_Z = 20*cos(phi*3.14/180.0);
-            cout << "spin left: " << phi << endl;
+            beta -= (double)CAMERA_SPIN/ (double)windowWidth;
+            recalculateCameraPos();
+            cout << "spin left: " << beta << endl;
             break;
         case 'A':
             // camera spin left
-            phi -= (double)CAMERA_BIG_SPIN/ (double)windowWidth;
-            CAMERA_X = 20*sin(phi*3.14/180.0);
-            CAMERA_Z = 20*cos(phi*3.14/180.0);
-            cout << "fast spin left: " << phi << endl;
+            beta -= (double)CAMERA_BIG_SPIN/ (double)windowWidth;
+            recalculateCameraPos();
+            cout << "fast spin left: " << beta << endl;
             break;
         case 'd':
             // camera spin right
-            phi += (double)CAMERA_SPIN/ (double)windowWidth;
-            CAMERA_X = 20*sin(phi*3.14/180.0);
-            CAMERA_Z = 20*cos(phi*3.14/180.0);
-            cout << "spin right: " << phi << endl;
+            beta += (double)CAMERA_SPIN/ (double)windowWidth;
+            recalculateCameraPos();
+            cout << "spin right: " << beta << endl;
             break;
         case 'D':
             // camera spin right
-            phi += (double)CAMERA_BIG_SPIN/ (double)windowWidth;
-            CAMERA_X = 20*sin(phi*3.14/180.0);
-            CAMERA_Z = 20*cos(phi*3.14/180.0);
-            cout << "fast spin right: " << phi << endl;
+            beta += (double)CAMERA_BIG_SPIN/ (double)windowWidth;
+            recalculateCameraPos();
+            cout << "fast spin right: " << beta << endl;
             break;
         case 'w':
             // camera look up
-            beta += (double)CAMERA_SPIN/ (double)windowHeight;
-            CAMERA_Y = 50*tan(beta*3.14/180.0);
-            cout << "CAMERA_Y : " << CAMERA_Y<<endl;
-            cout << "look up: " << beta << endl;
+            phi -=(double)CAMERA_SPIN/ (double)windowHeight;
+            if (phi < 0)
+                phi = 0 + EPSLON;
+            recalculateCameraPos();
+            cout << "look up: " << phi << endl;
             break;
         case 'W':
             // camera look up
-            beta += (double)CAMERA_BIG_SPIN/ (double)windowHeight;
-            CAMERA_Y = 50*tan(beta*3.14/180.0);
-            cout << "CAMERA_Y : " << CAMERA_Y<<endl;
-            cout << "fast look up: " << beta << endl;
+            phi -=(double)CAMERA_BIG_SPIN/ (double)windowHeight;
+            if (phi < 0)
+                phi = 0 + EPSLON;
+            recalculateCameraPos();
+            cout << "fast look up: " << phi << endl;
             break;
         case 's':
-            beta -= (double)CAMERA_SPIN/ (double)windowHeight;
-            CAMERA_Y = 50*tan(beta*3.14/180.0);
-            cout << "CAMERA_Y : " << CAMERA_Y<<endl;
-            cout << "look down: " << beta << endl;
+            phi += (double)CAMERA_SPIN/ (double)windowHeight;
+            if (phi > M_PI)
+                phi = M_PI;
+            recalculateCameraPos();
+            cout << "look down: " << phi << endl;
             break;
         case 'S':
-            beta -= (double)CAMERA_BIG_SPIN/ (double)windowHeight;
-            CAMERA_Y = 50*tan(beta*3.14/180.0);
-            cout << "CAMERA_Y : " << CAMERA_Y<<endl;
-            cout << "fast look down: " << beta << endl;
+            phi +=(double)CAMERA_BIG_SPIN/ (double)windowHeight;
+            if (phi > M_PI)
+                phi = M_PI;
+            recalculateCameraPos();
+            cout << "fast look down: " << phi << endl;
             break;
         case 'm':
             WAVE_SWIM -= 5;
