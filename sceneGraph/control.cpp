@@ -23,14 +23,12 @@ void make_menu()
     
     // Associate a mouse button with menu
     glutAttachMenu(GLUT_RIGHT_BUTTON);
-    
 }
 
 void menu(int item)
 {
     switch (item)
     {
-            
         case AMBIENT_LIGHT:
         {
             AMBIENT = 1 - AMBIENT;

@@ -12,7 +12,7 @@
 #include <stdio.h>
 #include "common.h"
 
-// Menu items
+// menu items
 enum MENU_TYPE
 {
     AMBIENT_LIGHT,
