@@ -12,8 +12,6 @@
 #include <stdio.h>
 #include "main.h"
 
-void drawBottom();
-void drawMiddle();
 void drawArm(bool x);
 void drawHead();
 void drawEye(bool x);

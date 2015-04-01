@@ -13,17 +13,6 @@ using namespace std;
 GLfloat BOTTOM_RADIUS = 1;
 GLfloat EYE_RADIUS = 0.25;
 
-void drawBottom(){
-    GLfloat red[] = {1,1,1};
-    glColor3fv(red);
-    
-    glPushMatrix();
-    glTranslatef(0,BOTTOM_RADIUS,0);
-        glutSolidSphere(BOTTOM_RADIUS, 20, 20);
-    glPopMatrix();
-
-}
-
 void drawFloor() {
     glNormal3f(0, 1, 0);
     double originx = -5;
@@ -45,18 +34,6 @@ void tileFloor(double x1, double y1, double x2, double y2, double r, double g, d
     glRectf(x1, y1, x2, y2);
 }
 
-void drawMiddle() {
-    GLfloat red[] = {1,1,1};
-    glColor3fv(red);
-    
-    glPushMatrix();
-    glTranslatef(0,2*BOTTOM_RADIUS,0);
-        glutSolidSphere(BOTTOM_RADIUS*0.75, 20, 20);
-    glPopMatrix();
-    
-    drawArm(true); // left arm
-    drawArm(false);// right arm
-}
 
 void drawArm(bool isLeft) {
     GLfloat white[] = {1,1,1};
@@ -99,16 +76,16 @@ void drawHead() {
     glColor3fv(red);
     glPushMatrix();
     glTranslatef(0,1.9*BOTTOM_RADIUS,0);
-    glRotatef(theta,1,0,0);
-    glRotatef(beta,0,1,0);
+    glRotatef(head_theta,1,0,0);
+    glRotatef(head_beta,0,1,0);
         glutSolidSphere(BOTTOM_RADIUS*0.5, 20, 20); // head
         drawHat(BOTTOM_RADIUS);                     // hat
         drawEye(true);                              // left eye
         drawEye(false);                             // right eye
         drawEarring(true);                          // left earring
         drawEarring(false);                         // right earring
-    glRotatef(-theta, 1, 0, 0);
-    glRotatef(-beta,0,1,0);
+    glRotatef(-head_theta, 1, 0, 0);
+    glRotatef(-head_beta,0,1,0);
     glTranslatef(0,-1.9*BOTTOM_RADIUS,0);
     glPopMatrix();
 }
@@ -203,6 +180,7 @@ void drawHeadLamp(GLfloat ztrans)
     glTranslatef(0, 0, ztrans);
         glutSolidSphere(0.1, 5, 5); // star-shaped
     glTranslatef(0, 0, -ztrans);
+    
     
 //    // enable light1 and lighting
 //    glEnable(GL_LIGHT1);

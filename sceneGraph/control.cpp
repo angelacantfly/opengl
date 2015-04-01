@@ -108,8 +108,6 @@ void mouse(int button, int state, int x, int y)
 void motion(int x, int y)
 {
     cout << "Mouse at " << x << " " << y << endl;
-    phi += (double)x/ (double)windowWidth;
-    beta += (double)y/ (double)windowHeight;
     glutPostRedisplay();
 }
 
@@ -151,19 +149,19 @@ void keyboard(unsigned char key, int x, int y)
     switch (key) {
         case 'c':
             // nod down
-            theta += 5;
+            head_theta += 5;
             break;
         case 'C':
             // nod up
-            theta -= 5;
+            head_theta -= 5;
             break;
         case 'v':
             // head turn left
-            beta -= 5;
+            head_beta -= 5;
             break;
         case 'V':
             // head turn right
-            beta += 5;
+            head_beta += 5;
             break;
         case 'Z':
             // zoom in

@@ -20,6 +20,8 @@ const double EPSLON = 0.00001;
 // position of snowman
 extern double AVATAR_POS_X;
 extern double AVATAR_POS_Z;
+extern double AVATAR_POS_Y;
+extern const double AVATAR_EYE_POS;
 
 // position of camera (user controlled)
 extern double CAMERA_X;
@@ -35,8 +37,8 @@ extern double WAVE_SWIM;    // front to back
 extern double WAVE_UP_DOWN; // up and down
 
 // robot control
-extern double theta;    // head up and down
-extern double beta;     // head left and right
+extern double head_theta;    // head up and down
+extern double head_beta;     // head left and right
 
 // camera control
 extern double phi;

@@ -10,10 +10,12 @@ using namespace std;
 double AVATAR_POS_X = 0.0;
 double AVATAR_POS_Z = 0.0;
 
-double theta =  0.0;        // how much the robot nods
 double alpha = 0.0;         // how much the robot turns head left and right
 double phi = 0.0 + EPSLON;  // camera view: up and down
 double beta = 15;           // camera view: left to right
+
+double head_theta = 0.0;    // how much the robot nods
+double head_beta = 0.0;
 
 double HEADLAMPHEIGHT = 0;  // position of head lamp
 double WAVE_SWIM = 0;       // how much robot moves arms (front to back)
@@ -142,18 +144,6 @@ void display()
 }
 
 
-
-void drawSnowman() {
-    // allow user control to move snowman
-    
-    glTranslatef(AVATAR_POS_X,0,AVATAR_POS_Z);
-
-    // draw snowman
-    drawBottom();
-    drawMiddle();
-    drawHead();
-}
-
 void drawGenie() {
     glTranslatef(AVATAR_POS_X,0,AVATAR_POS_Z);
 
@@ -162,5 +152,30 @@ void drawGenie() {
     drawGenieMiddle();
     drawHead();
     drawGenieTeapot();
+    glColor3f(1, 0, 0);
+    //    // enable light1 and lighting
+        glEnable(GL_LIGHT1);
+    //
+    double BOTTOM_RADIUS = 1;
+        // position of light1
+        GLfloat ypos = 2.0 * BOTTOM_RADIUS + 0.5;
+        GLfloat zpos = AVATAR_POS_Z + 0.3 + 0.1 ;
+        GLfloat lightPosition[]={static_cast<GLfloat>(AVATAR_POS_X),ypos,zpos,1};
+    glTranslatef(static_cast<GLfloat>(AVATAR_POS_X), ypos, zpos);
+    glutSolidSphere(0.1, 5, 5);
+    
+        // set color of light0
+        GLfloat ambientWhite[] = {0.2,0.2,0.2,0.2};
+        GLfloat white[] = {1,0,0,0};		      // light color
+        GLfloat light_ambient[] = { 0.2, 0.2, 0.2, 0.2}; // ambient
+        GLfloat direction[] = {0, -1.0, 1.0};
+        glLightfv(GL_LIGHT1, GL_DIFFUSE, white);   // set diffuse light color
+        glLightfv(GL_LIGHT1, GL_SPECULAR, white);  // set specular light color
+        glLightfv(GL_LIGHT1, GL_AMBIENT, ambientWhite);
+        glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, direction);
+    glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, 15.0);
+    glLightf(GL_LIGHT1, GL_SPOT_EXPONENT, 5.0);
+    
+    
 }
 
