@@ -100,11 +100,15 @@ void drawHead() {
     glPushMatrix();
     glTranslatef(0,1.9*BOTTOM_RADIUS,0);
     glRotatef(theta,1,0,0);
+    glRotatef(beta,0,1,0);
         glutSolidSphere(BOTTOM_RADIUS*0.5, 20, 20); // head
         drawHat(BOTTOM_RADIUS);                     // hat
         drawEye(true);                              // left eye
         drawEye(false);                             // right eye
+        drawEarring(true);                          // left earring
+        drawEarring(false);                         // right earring
     glRotatef(-theta, 1, 0, 0);
+    glRotatef(-beta,0,1,0);
     glTranslatef(0,-1.9*BOTTOM_RADIUS,0);
     glPopMatrix();
 }
@@ -124,6 +128,26 @@ void drawEye(bool isLeft) {
     
     glPopMatrix();
 }
+
+void drawEarring(bool isLeft)
+{
+    GLfloat yellow[] = {1,1,0};
+    glColor3fv(yellow);
+    
+    glPushMatrix();
+    
+    // position for each eye
+    if (isLeft) glTranslatef(-0.5,-0.25,0);
+    else    glTranslatef(.5,-0.25,0);
+    
+    // eye
+    glRotatef(90,0,1,0);
+    glutSolidTorus(EYE_RADIUS/4, EYE_RADIUS/2, 20, 20);
+    glRotatef(-90,0,1,0);
+    
+    glPopMatrix();
+}
+
 void drawTeapot(GLfloat radius)
 {
     GLfloat purple[] = {0.5,0,0.5};
@@ -231,5 +255,16 @@ void drawGenieBottom()
         glutSolidCone(BOTTOM_RADIUS/2, BOTTOM_RADIUS, 20, 20);
     glRotatef(-90,1,0,0);
     glTranslatef(0,-BOTTOM_RADIUS, 0);
+}
+
+void drawGenieTeapot()
+{
+    GLfloat yellow[] = {1,1,0};
+    glColor3fv(yellow);
+    glPushMatrix();
+    glTranslatef(-1,0.25,0);
+    glScalef(.1,.1,.1);
+    glutSolidTeapot(3);
+    glPopMatrix();
 }
 

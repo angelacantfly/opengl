@@ -121,16 +121,26 @@ void recalculateCameraPos()
     CAMERA_Z = VIEW_RADIUS * sin(phi) * cos(beta);
 }
 
-// user controls snowman nod
+
 void keyboard(unsigned char key, int x, int y)
 {
     
     switch (key) {
         case 'c':
+            // nod down
             theta += 5;
             break;
-        case 'v':
+        case 'C':
+            // nod up
             theta -= 5;
+            break;
+        case 'v':
+            // head turn left
+            beta -= 5;
+            break;
+        case 'V':
+            // head turn right
+            beta += 5;
             break;
         case 'Z':
             // zoom in

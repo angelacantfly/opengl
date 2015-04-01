@@ -11,6 +11,7 @@ double AVATAR_POS_X = 0.0;
 double AVATAR_POS_Z = 0.0;
 
 double theta =  0.0;        // how much the robot nods
+double alpha = 0.0;         // how much the robot turns head left and right
 double phi = 0.0 + EPSLON;  // camera view: up and down
 double beta = 15;           // camera view: left to right
 
@@ -160,5 +161,6 @@ void drawGenie() {
     drawGenieBottom();
     drawGenieMiddle();
     drawHead();
+    drawGenieTeapot();
 }
 

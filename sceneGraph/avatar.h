@@ -17,6 +17,7 @@ void drawMiddle();
 void drawArm(bool x);
 void drawHead();
 void drawEye(bool x);
+void drawEarring(bool x);
 void drawFloor();
 void drawTeapot(GLfloat radius);
 void tileFloor(double x1, double y1, double x2, double y2, double r, double g, double b);
@@ -24,5 +25,6 @@ void drawHat(GLfloat radius);
 void drawHeadLamp(GLfloat ztrans);
 void drawGenieMiddle();
 void drawGenieBottom();
+void drawGenieTeapot();
 
 #endif /* defined(__sceneGraph__avatar__) */

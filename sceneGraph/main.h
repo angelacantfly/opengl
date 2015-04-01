@@ -34,8 +34,11 @@ extern double HEADLAMPHEIGHT;
 extern double WAVE_SWIM;    // front to back
 extern double WAVE_UP_DOWN; // up and down
 
-// nod angle
-extern double theta;
+// robot control
+extern double theta;    // head up and down
+extern double beta;     // head left and right
+
+// camera control
 extern double phi;
 extern double beta;
 
