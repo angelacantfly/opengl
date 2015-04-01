@@ -17,7 +17,8 @@ enum MENU_TYPE
 {
     AMBIENT_LIGHT,
     POINT_LIGHT,
-    HELP_CAMERA
+    HELP_CAMERA,
+    HELP_ROBOT
 };
 
 void make_menu();

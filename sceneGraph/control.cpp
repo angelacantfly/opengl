@@ -19,7 +19,8 @@ void make_menu()
     // Add menu items
     glutAddMenuEntry("Toggle Ambient Light", AMBIENT_LIGHT);
     glutAddMenuEntry("Toggle Point Light", POINT_LIGHT);
-    glutAddMenuEntry("Help with camera control", HELP_CAMERA);
+    glutAddMenuEntry("Help with Camera Control", HELP_CAMERA);
+    glutAddMenuEntry("Help with Robot Control", HELP_ROBOT);
     
     // Associate a mouse button with menu
     glutAttachMenu(GLUT_RIGHT_BUTTON);
@@ -65,6 +66,28 @@ void menu(int item)
             S              fast look down"
             << endl;
             break;
+        }
+        case HELP_ROBOT:
+        {
+            cout << "ROBOT control\n\
+            \n\
+            action         result\n\
+            ------         ------\n\
+            Left arrow     move left\n\
+            Right arrow    move right\n\
+            Up arrow       move backward\n\
+            Down arrow     move forward\n\
+            c              look down\n\
+            C              look up\n\
+            v              look left\n\
+            V              look right\n\
+            m              move arms backward\n\
+            M              move arms forward\n\
+            k              move arms up\n\
+            K              move arms down"
+            << endl;
+            break;
+
         }
         default:
         {       /* Nothing */       }
