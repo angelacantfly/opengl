@@ -10,15 +10,16 @@
 #include "common.h"
 #include "main.h"
 using namespace std;
-GLfloat BOTTOM_RADIUS = 1;
-GLfloat EYE_RADIUS = 0.25;
+GLfloat BOTTOM_RADIUS = 1.0;
+GLfloat EYE_RADIUS = 0.25 * BOTTOM_RADIUS;
 
 void drawFloor() {
     glNormal3f(0, 1, 0);
     double originx = -5;
     double originy = -5;
     int color = 0;
-    glRotatef(-90,1,0,0);
+//    glRotatef(-90,1,0,0);
+    glNormal3f(0,0,-1);
     for (int row = 0 ; row < 5; ++row)
         for (int col = 0; col < 5; ++ col)
         {
@@ -140,8 +141,8 @@ void drawHat(GLfloat radius)
 {
     glColor3f(1, 1, 1);
     
-    GLfloat xtrans = 0.25;
-    GLfloat ytrans = 0.5;
+    GLfloat xtrans = 0.25 * BOTTOM_RADIUS;
+    GLfloat ytrans = 0.5 * BOTTOM_RADIUS;
     GLfloat angle = 45;
     GLfloat topRadius = 0.35;
     

@@ -32,19 +32,31 @@ void menu(int item)
     {
         case AMBIENT_LIGHT:
         {
-            AMBIENT = 1 - AMBIENT;
+            AMBIENT = !AMBIENT;
             cout << "Toggle ambient light: " << (AMBIENT?"ON":"OFF") << endl;
+            if (AMBIENT)
+            {
+                GLfloat light_ambient[] = { 0.2, 0.2, 0.2, 0.2};
+                glLightModelfv(GL_LIGHT_MODEL_AMBIENT, light_ambient);
+            }
+            else
+            {
+                GLfloat no_ambient[] = {0,0,0,0};
+                glLightModelfv(GL_LIGHT_MODEL_AMBIENT, no_ambient);
+            }
             break;
         }
         case POINT_LIGHT:
         {
-            POINTLIGHT = 1 - POINTLIGHT;
+            POINTLIGHT = !POINTLIGHT;
             cout << "Toggle point light: " << (POINTLIGHT?"ON":"OFF") << endl;
-            
-            float pointLight = 0;
-            if (POINTLIGHT) pointLight = 1;
-            GLfloat lightPosition[]={3,1,1,pointLight};
-            glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
+            if (POINTLIGHT) {
+                glEnable(GL_LIGHT0);
+            }
+            else {
+                glDisable(GL_LIGHT0);
+            }
+            glutPostRedisplay();
             
             break;
         }
@@ -150,10 +162,14 @@ void keyboard(unsigned char key, int x, int y)
         case 'c':
             // nod down
             head_theta += 5;
+            if (head_theta > 90)
+                head_theta = 90;
             break;
         case 'C':
             // nod up
             head_theta -= 5;
+            if (head_theta < -90)
+                head_theta = -90;
             break;
         case 'v':
             // head turn left

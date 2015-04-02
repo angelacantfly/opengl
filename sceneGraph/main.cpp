@@ -11,8 +11,8 @@ double AVATAR_POS_X = 0.0;
 double AVATAR_POS_Z = 0.0;
 
 double alpha = 0.0;         // how much the robot turns head left and right
-double phi = 0.0 + EPSLON;  // camera view: up and down
-double beta = 15;           // camera view: left to right
+double phi = 60.0 + EPSLON;  // camera view: up and down
+double beta = 0;           // camera view: left to right
 
 double head_theta = 0.0;    // how much the robot nods
 double head_beta = 0.0;
@@ -78,22 +78,20 @@ void init()
     // enable light0 and lighting
     glEnable(GL_LIGHT0);
     glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT1);
     
-    glEnable(GL_COLOR_MATERIAL);
+   // glEnable(GL_COLOR_MATERIAL);
     
     // position of light0
-    float pointLight = 0;
-    if (POINTLIGHT) pointLight = 1;
-    GLfloat lightPosition[]={0,1,0,pointLight};
-    glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
+//    GLfloat lightPosition[]={0,1,0,1};
+//    glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
     
     // set color of light0
     GLfloat ambientWhite[] = {0.2,0.2,0.2,0.2};
     GLfloat white[] = {1,1,1,0};		      // light color
-    GLfloat light_ambient[] = { 0.2, 0.2, 0.2, 0.2}; // ambient
     glLightfv(GL_LIGHT0, GL_DIFFUSE, white);   // set diffuse light color
     glLightfv(GL_LIGHT0, GL_SPECULAR, white);  // set specular light color
-    glLightfv(GL_LIGHT0, GL_AMBIENT, ambientWhite);
+
     
     // enable depth buffering
     glEnable(GL_DEPTH_TEST);
@@ -119,22 +117,10 @@ void display()
     glLoadIdentity();
     gluLookAt(CAMERA_X, CAMERA_Y, CAMERA_Z, 0, 0, 0, 0, 1, 0);
     
-    // toggle Ambient Light
-    if (AMBIENT)
-    {
-        GLfloat light_ambient[] = { 0.2, 0.2, 0.2, 0.2};
-        glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
-    }
-    else
-    {
-        GLfloat no_ambient[] = {0,0,0,0};
-        glLightfv(GL_LIGHT0, GL_AMBIENT, no_ambient);
-    }
     
-    // TOGGLE POINT LIGHT
-    float pointLight = 0;
-    if (POINTLIGHT) pointLight = 1;
-    GLfloat lightPosition[]={0,3,0,pointLight};
+    
+    // SET POINT LIGHT POSITION
+    GLfloat lightPosition[]={0,3,0,1};
     glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
     
     drawFloor();
@@ -154,14 +140,22 @@ void drawGenie() {
     drawGenieTeapot();
     glColor3f(1, 0, 0);
     //    // enable light1 and lighting
-        glEnable(GL_LIGHT1);
+
     //
     double BOTTOM_RADIUS = 1;
         // position of light1
-        GLfloat ypos = 2.0 * BOTTOM_RADIUS + 0.5;
+        GLfloat ypos = 1.9 * BOTTOM_RADIUS + 0.5;
         GLfloat zpos = AVATAR_POS_Z + 0.3 + 0.1 ;
-        GLfloat lightPosition[]={static_cast<GLfloat>(AVATAR_POS_X),ypos,zpos,1};
-    glTranslatef(static_cast<GLfloat>(AVATAR_POS_X), ypos, zpos);
+        GLfloat lightPosition[]={0,ypos,0,1};
+    
+    GLfloat hx, hy, hz;
+    hx = AVATAR_POS_X;
+    hy = 1.9 * BOTTOM_RADIUS + 0.5 * cos(head_theta/180 * M_PI);
+    hz = AVATAR_POS_Z + 0.4 + 0.4 * sin(head_theta)* sin(head_beta) ;
+    cout << "head_beta : " << head_beta << endl;
+    cout << "head_theta : " << head_theta << endl;
+//    glTranslatef(static_cast<GLfloat>(AVATAR_POS_X), ypos, zpos);
+    glTranslatef(hx, hy, zpos);
     glutSolidSphere(0.1, 5, 5);
     
         // set color of light0
@@ -170,11 +164,11 @@ void drawGenie() {
         GLfloat light_ambient[] = { 0.2, 0.2, 0.2, 0.2}; // ambient
         GLfloat direction[] = {0, -1.0, 1.0};
         glLightfv(GL_LIGHT1, GL_DIFFUSE, white);   // set diffuse light color
-        glLightfv(GL_LIGHT1, GL_SPECULAR, white);  // set specular light color
-        glLightfv(GL_LIGHT1, GL_AMBIENT, ambientWhite);
-        glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, direction);
-    glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, 15.0);
-    glLightf(GL_LIGHT1, GL_SPOT_EXPONENT, 5.0);
+        //glLightfv(GL_LIGHT1, GL_SPECULAR, white);  // set specular light color
+        //glLightfv(GL_LIGHT1, GL_AMBIENT, ambientWhite);
+        //glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, direction);
+    //glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, 45.0);
+    //glLightf(GL_LIGHT1, GL_SPOT_EXPONENT, 5.0);
     
     
 }
