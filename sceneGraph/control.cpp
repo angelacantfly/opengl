@@ -19,6 +19,7 @@ void make_menu()
     // Add menu items
     glutAddMenuEntry("Toggle Ambient Light", AMBIENT_LIGHT);
     glutAddMenuEntry("Toggle Point Light", POINT_LIGHT);
+    glutAddMenuEntry("Toggle to Robot Perspective", ROBOT_PERSPECTIVE);
     glutAddMenuEntry("Help with Camera Control", HELP_CAMERA);
     glutAddMenuEntry("Help with Robot Control", HELP_ROBOT);
     
@@ -59,6 +60,10 @@ void menu(int item)
             glutPostRedisplay();
             
             break;
+        }
+        case ROBOT_PERSPECTIVE:
+        {
+            robotPerspective = true;
         }
         case HELP_CAMERA:
         {

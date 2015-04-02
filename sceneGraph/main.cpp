@@ -8,6 +8,7 @@ using namespace std;
 
 // location of robot
 double AVATAR_POS_X = 0.0;
+double AVATAR_POS_Y = 0.0;
 double AVATAR_POS_Z = 0.0;
 
 double alpha = 0.0;         // how much the robot turns head left and right
@@ -24,6 +25,9 @@ double WAVE_UP_DOWN = 0;    // how much robot moves arms (up and down)
 // toggle lighting
 bool AMBIENT = false;
 bool POINTLIGHT = false;
+
+// toggle camera perspectie
+bool robotPerspective = false;
 
 // how much user controls camera
 double VIEW_RADIUS = 20;
@@ -115,7 +119,11 @@ void display()
     // initialize modelview matrix
     glMatrixMode(GL_MODELVIEW_MATRIX);
     glLoadIdentity();
-    gluLookAt(CAMERA_X, CAMERA_Y, CAMERA_Z, 0, 0, 0, 0, 1, 0);
+    
+    // regular camera view
+    if (!robotPerspective) {
+        gluLookAt(CAMERA_X, CAMERA_Y, CAMERA_Z, 0, 0, 0, 0, 1, 0);
+    }
     
     
     
@@ -133,12 +141,16 @@ void display()
 void drawGenie() {
     glTranslatef(AVATAR_POS_X,0,AVATAR_POS_Z);
 
-    // draw genie's body parts
-    drawGenieBottom();
-    drawGenieMiddle();
-    drawHead();
-    drawGenieTeapot();
+    if (!robotPerspective) {
+        // draw genie's body parts
+        drawGenieBottom();
+        drawGenieMiddle();
+        drawHead();
+        drawGenieTeapot();
+    }
+
     glColor3f(1, 0, 0);
+
     //    // enable light1 and lighting
 
     //
@@ -158,6 +170,7 @@ void drawGenie() {
     glTranslatef(hx, hy, zpos);
     glutSolidSphere(0.1, 5, 5);
     
+
         // set color of light0
         GLfloat ambientWhite[] = {0.2,0.2,0.2,0.2};
         GLfloat white[] = {1,0,0,0};		      // light color
@@ -169,6 +182,7 @@ void drawGenie() {
         //glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, direction);
     //glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, 45.0);
     //glLightf(GL_LIGHT1, GL_SPOT_EXPONENT, 5.0);
+
     
     
 }
