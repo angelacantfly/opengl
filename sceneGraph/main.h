@@ -48,6 +48,9 @@ extern double beta;
 extern bool AMBIENT;
 extern bool POINTLIGHT;
 
+// toggle view
+extern bool robotPerspective;
+
 void display(void);
 void reshape(int width, int height);
 void init();

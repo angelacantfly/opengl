@@ -8,6 +8,7 @@ using namespace std;
 
 // location of robot
 double AVATAR_POS_X = 0.0;
+double AVATAR_POS_Y = 0.0;
 double AVATAR_POS_Z = 0.0;
 
 double alpha = 0.0;         // how much the robot turns head left and right
@@ -24,6 +25,9 @@ double WAVE_UP_DOWN = 0;    // how much robot moves arms (up and down)
 // toggle lighting
 bool AMBIENT = false;
 bool POINTLIGHT = false;
+
+// toggle camera perspectie
+bool robotPerspective = false;
 
 // how much user controls camera
 double VIEW_RADIUS = 20;
@@ -117,7 +121,11 @@ void display()
     // initialize modelview matrix
     glMatrixMode(GL_MODELVIEW_MATRIX);
     glLoadIdentity();
-    gluLookAt(CAMERA_X, CAMERA_Y, CAMERA_Z, 0, 0, 0, 0, 1, 0);
+    
+    // regular camera view
+    if (!robotPerspective) {
+        gluLookAt(CAMERA_X, CAMERA_Y, CAMERA_Z, 0, 0, 0, 0, 1, 0);
+    }
     
     // toggle Ambient Light
     if (AMBIENT)
@@ -147,32 +155,36 @@ void display()
 void drawGenie() {
     glTranslatef(AVATAR_POS_X,0,AVATAR_POS_Z);
 
-    // draw genie's body parts
-    drawGenieBottom();
-    drawGenieMiddle();
-    drawHead();
-    drawGenieTeapot();
+    if (!robotPerspective) {
+        // draw genie's body parts
+        drawGenieBottom();
+        drawGenieMiddle();
+        drawHead();
+        drawGenieTeapot();
+    }
+
     glColor3f(1, 0, 0);
-    //    // enable light1 and lighting
-        glEnable(GL_LIGHT1);
-    //
+    // enable light1 and lighting
+    glEnable(GL_LIGHT1);
+
     double BOTTOM_RADIUS = 1;
-        // position of light1
+    // position of light1
         GLfloat ypos = 2.0 * BOTTOM_RADIUS + 0.5;
         GLfloat zpos = AVATAR_POS_Z + 0.3 + 0.1 ;
         GLfloat lightPosition[]={static_cast<GLfloat>(AVATAR_POS_X),ypos,zpos,1};
     glTranslatef(static_cast<GLfloat>(AVATAR_POS_X), ypos, zpos);
     glutSolidSphere(0.1, 5, 5);
     
-        // set color of light0
-        GLfloat ambientWhite[] = {0.2,0.2,0.2,0.2};
-        GLfloat white[] = {1,0,0,0};		      // light color
-        GLfloat light_ambient[] = { 0.2, 0.2, 0.2, 0.2}; // ambient
-        GLfloat direction[] = {0, -1.0, 1.0};
-        glLightfv(GL_LIGHT1, GL_DIFFUSE, white);   // set diffuse light color
-        glLightfv(GL_LIGHT1, GL_SPECULAR, white);  // set specular light color
-        glLightfv(GL_LIGHT1, GL_AMBIENT, ambientWhite);
-        glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, direction);
+    // set color of light1
+    GLfloat ambientWhite[] = {0.2,0.2,0.2,0.2};
+    GLfloat white[] = {1,0,0,0};		      // light color
+    GLfloat light_ambient[] = { 0.2, 0.2, 0.2, 0.2}; // ambient
+    GLfloat direction[] = {0, -1.0, 1.0};
+    glLightfv(GL_LIGHT1, GL_DIFFUSE, white);   // set diffuse light color
+    glLightfv(GL_LIGHT1, GL_SPECULAR, white);  // set specular light color
+    glLightfv(GL_LIGHT1, GL_AMBIENT, ambientWhite);
+    // spotlight
+    glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, direction);
     glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, 15.0);
     glLightf(GL_LIGHT1, GL_SPOT_EXPONENT, 5.0);
     
