@@ -14,12 +14,13 @@ GLfloat BOTTOM_RADIUS = 1.0;
 GLfloat EYE_RADIUS = 0.25 * BOTTOM_RADIUS;
 
 void drawFloor() {
-    glNormal3f(0, 1, 0);
+
     double originx = -5;
     double originy = -5;
     int color = 0;
-//    glRotatef(-90,1,0,0);
-    glNormal3f(0,0,-1);
+//        glNormal3f(0, 1, 0);
+    glRotatef(-90,1,0,0);
+    glNormal3f(0,0,1);
     for (int row = 0 ; row < 5; ++row)
         for (int col = 0; col < 5; ++ col)
         {

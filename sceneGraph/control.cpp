@@ -167,14 +167,14 @@ void keyboard(unsigned char key, int x, int y)
         case 'c':
             // nod down
             head_theta += 5;
-            if (head_theta > 90)
-                head_theta = 90;
+//            if (head_theta > 90)
+//                head_theta = 90;
             break;
         case 'C':
             // nod up
             head_theta -= 5;
-            if (head_theta < -90)
-                head_theta = -90;
+//            if (head_theta < -90)
+//                head_theta = -90;
             break;
         case 'v':
             // head turn left
@@ -225,30 +225,28 @@ void keyboard(unsigned char key, int x, int y)
         case 'w':
             // camera look up
             phi -=(double)CAMERA_SPIN/ (double)windowHeight;
-            if (phi < 0)
-                phi = 0 + EPSLON;
             recalculateCameraPos();
             cout << "look up: " << phi << endl;
             break;
         case 'W':
             // camera look up
             phi -=(double)CAMERA_BIG_SPIN/ (double)windowHeight;
-            if (phi < 0)
-                phi = 0 + EPSLON;
+//            if (phi < 0)
+//                phi = 0 + EPSLON;
             recalculateCameraPos();
             cout << "fast look up: " << phi << endl;
             break;
         case 's':
             phi += (double)CAMERA_SPIN/ (double)windowHeight;
-            if (phi > M_PI)
-                phi = M_PI;
+//            if (phi > M_PI)
+//                phi = M_PI;
             recalculateCameraPos();
             cout << "look down: " << phi << endl;
             break;
         case 'S':
             phi +=(double)CAMERA_BIG_SPIN/ (double)windowHeight;
-            if (phi > M_PI)
-                phi = M_PI;
+//            if (phi > M_PI)
+//                phi = M_PI;
             recalculateCameraPos();
             cout << "fast look down: " << phi << endl;
             break;

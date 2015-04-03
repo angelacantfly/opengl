@@ -12,10 +12,10 @@ double AVATAR_POS_Y = 0.0;
 double AVATAR_POS_Z = 0.0;
 
 double alpha = 0.0;         // how much the robot turns head left and right
-double phi = 60.0 + EPSLON;  // camera view: up and down
+double phi = 0 + EPSLON;  // camera view: up and down
 double beta = 0;           // camera view: left to right
 
-double head_theta = 0.0;    // how much the robot nods
+double head_theta = -90.0;    // how much the robot nods
 double head_beta = 0.0;
 
 double HEADLAMPHEIGHT = 0;  // position of head lamp
@@ -23,7 +23,7 @@ double WAVE_SWIM = 0;       // how much robot moves arms (front to back)
 double WAVE_UP_DOWN = 0;    // how much robot moves arms (up and down)
 
 // toggle lighting
-bool AMBIENT = false;
+bool AMBIENT = true;
 bool POINTLIGHT = false;
 
 // toggle camera perspectie
@@ -80,11 +80,11 @@ void init()
     glClearColor(0,0.5,0.5,0);
     
     // enable light0 and lighting
-    glEnable(GL_LIGHT0);
+//    glEnable(GL_LIGHT0);
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT1);
     
-   // glEnable(GL_COLOR_MATERIAL);
+//    glEnable(GL_COLOR_MATERIAL);
     
     // position of light0
 //    GLfloat lightPosition[]={0,1,0,1};
@@ -170,18 +170,19 @@ void drawGenie() {
     glTranslatef(hx, hy, zpos);
     glutSolidSphere(0.1, 5, 5);
     
-
+    GLfloat lightpos[] = {hx,hy,zpos,1};
         // set color of light0
         GLfloat ambientWhite[] = {0.2,0.2,0.2,0.2};
         GLfloat white[] = {1,0,0,0};		      // light color
         GLfloat light_ambient[] = { 0.2, 0.2, 0.2, 0.2}; // ambient
         GLfloat direction[] = {0, -1.0, 1.0};
+        glLightfv(GL_LIGHT1, GL_POSITION, lightpos);
         glLightfv(GL_LIGHT1, GL_DIFFUSE, white);   // set diffuse light color
         //glLightfv(GL_LIGHT1, GL_SPECULAR, white);  // set specular light color
         //glLightfv(GL_LIGHT1, GL_AMBIENT, ambientWhite);
         //glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, direction);
-    //glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, 45.0);
-    //glLightf(GL_LIGHT1, GL_SPOT_EXPONENT, 5.0);
+    glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, 45.0);
+    glLightf(GL_LIGHT1, GL_SPOT_EXPONENT, 5.0);
 
     
     
