@@ -33,8 +33,11 @@ void menu(int item)
     {
         case AMBIENT_LIGHT:
         {
+            // toggle
             AMBIENT = !AMBIENT;
             cout << "Toggle ambient light: " << (AMBIENT?"ON":"OFF") << endl;
+            
+            // enable or disable depending on current state of light
             if (AMBIENT)
             {
                 GLfloat light_ambient[] = { 0.2, 0.2, 0.2, 0.2};
@@ -49,21 +52,30 @@ void menu(int item)
         }
         case POINT_LIGHT:
         {
+            // toggle
             POINTLIGHT = !POINTLIGHT;
             cout << "Toggle point light: " << (POINTLIGHT?"ON":"OFF") << endl;
+            
+            // enable or disable depending on current state of light
             if (POINTLIGHT) {
                 glEnable(GL_LIGHT0);
             }
             else {
                 glDisable(GL_LIGHT0);
             }
-            glutPostRedisplay();
-            
             break;
         }
         case ROBOT_PERSPECTIVE:
         {
-            robotPerspective = true;
+            // toggle to view world from robot's perspective
+            if (robotPerspective) {
+                robotPerspective = !robotPerspective;
+                cout << "Toggle robot perspective: OFF" << endl;
+            } else {
+                robotPerspective = !robotPerspective;
+                cout << "Toggle robot perspective: ON" << endl;
+            }
+            break;
         }
         case HELP_CAMERA:
         {
@@ -118,20 +130,19 @@ void menu(int item)
 
 void mouse(int button, int state, int x, int y)
 {
-    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
-        cout << "Left click with cursor at" << x << " " << y << endl;
+//    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
+//        cout << "Left click with cursor at" << x << " " << y << endl;
 }
 
 void motion(int x, int y)
 {
-    cout << "Mouse at " << x << " " << y << endl;
-    glutPostRedisplay();
+//    cout << "Mouse at " << x << " " << y << endl;
+//    glutPostRedisplay();
 }
 
-// user controls position of snowman
+// user controls position of robot
 void special(int key, int x, int y)
 {
-    
     switch (key) {
         case GLUT_KEY_LEFT:
             AVATAR_POS_X--;
@@ -145,7 +156,6 @@ void special(int key, int x, int y)
         case GLUT_KEY_UP:
             AVATAR_POS_Z++;
             break;
-            
         default:
             break;
     }
@@ -162,19 +172,18 @@ void recalculateCameraPos()
 
 void keyboard(unsigned char key, int x, int y)
 {
-    
     switch (key) {
         case 'c':
             // nod down
             head_theta += 5;
-//            if (head_theta > 90)
-//                head_theta = 90;
+            if (head_theta > 90)
+                head_theta = 90;
             break;
         case 'C':
             // nod up
             head_theta -= 5;
-//            if (head_theta < -90)
-//                head_theta = -90;
+            if (head_theta < -90)
+                head_theta = -90;
             break;
         case 'v':
             // head turn left
@@ -231,22 +240,22 @@ void keyboard(unsigned char key, int x, int y)
         case 'W':
             // camera look up
             phi -=(double)CAMERA_BIG_SPIN/ (double)windowHeight;
-//            if (phi < 0)
-//                phi = 0 + EPSLON;
+            if (phi < 0)
+                phi = 0 + EPSLON;
             recalculateCameraPos();
             cout << "fast look up: " << phi << endl;
             break;
         case 's':
             phi += (double)CAMERA_SPIN/ (double)windowHeight;
-//            if (phi > M_PI)
-//                phi = M_PI;
+            if (phi >= M_PI)
+                phi = M_PI;
             recalculateCameraPos();
             cout << "look down: " << phi << endl;
             break;
         case 'S':
             phi +=(double)CAMERA_BIG_SPIN/ (double)windowHeight;
-//            if (phi > M_PI)
-//                phi = M_PI;
+            if (phi >= M_PI)
+                phi = M_PI;
             recalculateCameraPos();
             cout << "fast look down: " << phi << endl;
             break;
