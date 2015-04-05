@@ -126,7 +126,12 @@ void display()
     if (!robotPerspective) {
         gluLookAt(CAMERA_X, CAMERA_Y, CAMERA_Z, 0, 0, 0, 0, 1, 0);
     } else {
-        gluLookAt(AVATAR_POS_X, AVATAR_POS_Y, AVATAR_POS_Z, 0, 0, 0, 0, 1,0);
+        GLfloat angle = atan2f(0.25, 0.5) *180/M_PI;
+        GLfloat length = 0.6;
+        GLfloat headLampX = AVATAR_POS_X + length *sin(head_beta/180*M_PI);
+        GLfloat headLampY = 1.9 * 1.0 + length* cos((head_theta + angle)/180 * M_PI);
+        GLfloat headLampZ = AVATAR_POS_Z  + 0.7 * sin((head_theta+ angle)/180 * M_PI)* cos(head_beta/180 * M_PI) ;
+        gluLookAt(headLampX, headLampY, headLampZ, 0, 0, 0, 0, 1,0);
     }
 
     if (HEADLAMPSTATUS) glEnable(GL_LIGHT1);
@@ -179,9 +184,11 @@ void drawSpotLight()
     double BOTTOM_RADIUS = 1;
     
     // position of head lamp marker
-    GLfloat headLampX = AVATAR_POS_X;
+    // FIXME: the headlamp is not completely in sync with the head rotation
+    //          when the head turns into weird angle
     GLfloat angle = atan2f(0.25, 0.5) *180/M_PI;
-    GLfloat length = 0.7;
+    GLfloat length = 0.6;
+    GLfloat headLampX = AVATAR_POS_X + length *sin(head_beta/180*M_PI);
     GLfloat headLampY = 1.9 * BOTTOM_RADIUS + length* cos((head_theta + angle)/180 * M_PI);
     GLfloat headLampZ = AVATAR_POS_Z  + length * sin((head_theta+ angle)/180 * M_PI)* cos(head_beta/180 * M_PI) ;
     
@@ -200,7 +207,9 @@ void drawSpotLight()
     // spot light properties
     GLfloat spotLightPosition[] = {headLampX,headLampY, headLampZ, 1};
     GLfloat yellow[] = {1,1,0,0};
-    GLfloat direction[] = {0, -1.0, 1.0};
+    GLfloat direction[] = {static_cast<GLfloat>(1.0 * sin(head_beta/180*M_PI)) ,
+                            -1.0,
+                            static_cast<GLfloat>(1.0 * cos(head_beta/180 * M_PI))};
     
     glLightfv(GL_LIGHT1, GL_POSITION, spotLightPosition);
     glLightfv(GL_LIGHT1, GL_DIFFUSE, yellow);   // set diffuse light color
