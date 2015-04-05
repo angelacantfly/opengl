@@ -11,7 +11,7 @@ double AVATAR_POS_X = 0.0;
 double AVATAR_POS_Y = 0.0;
 double AVATAR_POS_Z = 0.0;
 
-double phi = 89.41 + EPSLON;    // camera view: up and down
+double phi = M_PI/2 + EPSLON;    // camera view: up and down
 double beta = 0;            // camera view: left to right
 
 double head_theta = 0.0;    // how much the robot nods
@@ -82,7 +82,6 @@ void init()
 
     // enable light0 and lighting
     glEnable(GL_LIGHTING);
-//    glEnable(GL_LIGHT1);
 
     glEnable(GL_COLOR_MATERIAL);
     
@@ -157,50 +156,20 @@ void display()
 
 
 void drawGenie() {
-    glTranslatef(AVATAR_POS_X,0,AVATAR_POS_Z);
+    
 
     // regular view
     if (!robotPerspective) {
         // draw genie's body parts
+        glTranslatef(AVATAR_POS_X,0,AVATAR_POS_Z);
         drawGenieTeapot();
         drawGenieBottom();
         drawGenieMiddle();
         drawHead();
+        glTranslatef(-AVATAR_POS_X,0,-AVATAR_POS_Z);
         drawSpotLight();
     }
-//    
-//    glTranslatef(-AVATAR_POS_X,0,-AVATAR_POS_Z);
-//    glColor3f(1, 0, 0);
-//    double BOTTOM_RADIUS = 1;
-//    // position of light1
-//    GLfloat ypos = 1.9 * BOTTOM_RADIUS + 0.5;
-//    GLfloat zpos = AVATAR_POS_Z + 0.3 + 0.1 ;
-//    GLfloat lightPosition[]={0,ypos,0,1};
-//    
-//    GLfloat hx, hy, hz;
-//    hx = AVATAR_POS_X;
-//    hy = 1.9 * BOTTOM_RADIUS + 0.5 * cos(head_theta/180 * M_PI);
-//    hz = AVATAR_POS_Z + 0.4 + 0.4 * sin(head_theta/180 * M_PI)* cos(head_beta/180 * M_PI) ;
-//    cout << "head_beta : " << head_beta << endl;
-//    cout << "head_theta : " << head_theta << endl;
-//    cout << "hy " << hy << "     hz " << hz<<endl;
-//    //    glTranslatef(static_cast<GLfloat>(AVATAR_POS_X), ypos, zpos);
-//    glTranslatef(hx, hy, zpos);
-//    glutSolidSphere(0.1, 5, 5);
-//    
-//    GLfloat lightpos[] = {hx,hy,zpos,1};
-//    // set color of light0
-//    GLfloat ambientWhite[] = {0.2,0.2,0.2,0.2};
-//    GLfloat white[] = {1,0,0,0};		      // light color
-//    GLfloat light_ambient[] = { 0.2, 0.2, 0.2, 0.2}; // ambient
-//    GLfloat direction[] = {0, -1.0, 1.0};
-//    glLightfv(GL_LIGHT1, GL_POSITION, lightpos);
-//    glLightfv(GL_LIGHT1, GL_DIFFUSE, white);   // set diffuse light color
-//    //glLightfv(GL_LIGHT1, GL_SPECULAR, white);  // set specular light color
-//    //glLightfv(GL_LIGHT1, GL_AMBIENT, ambientWhite);
-//    glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, direction);
-//    glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, 45.0);
-//    glLightf(GL_LIGHT1, GL_SPOT_EXPONENT, 5.0);
+    
 }
 
 
@@ -211,18 +180,22 @@ void drawSpotLight()
     
     // position of head lamp marker
     GLfloat headLampX = AVATAR_POS_X;
-    GLfloat headLampY = 1.9 * BOTTOM_RADIUS + 0.5 * cos(head_theta/180 * M_PI);
-    GLfloat headLampZ = AVATAR_POS_Z + 0.4 + 0.4 * sin(head_theta)* sin(head_beta) ;
+    GLfloat angle = atan2f(0.25, 0.5) *180/M_PI;
+    GLfloat length = 0.7;
+    GLfloat headLampY = 1.9 * BOTTOM_RADIUS + length* cos((head_theta + angle)/180 * M_PI);
+    GLfloat headLampZ = AVATAR_POS_Z  + length * sin((head_theta+ angle)/180 * M_PI)* cos(head_beta/180 * M_PI) ;
     
     // draw head lamp marker
+    glTranslatef(headLampX, headLampY, headLampZ);
     glRotatef(head_beta,0,1,0);     // move with head left and right
     glRotatef(head_theta,1,0,0);    // move with head up and down
-    glTranslatef(headLampX, headLampY, headLampZ);
+    
         glColor3f(1, 0, 0);            // red
         glutSolidSphere(0.1, 5, 5);    // star-shaped
-    glTranslatef(-headLampX, -headLampY, -headLampZ);
     glRotatef(-head_theta,1,0,0);    // look up and down
     glRotatef(-head_beta,0,1,0);     // look left and right
+    glTranslatef(-headLampX, -headLampY, -headLampZ);
+    
     
     // spot light properties
     GLfloat spotLightPosition[] = {headLampX,headLampY, headLampZ, 1};
@@ -234,5 +207,6 @@ void drawSpotLight()
     glLightfv(GL_LIGHT1, GL_SPECULAR, yellow);  // set specular light color
     
     glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, direction);
+    
 }
 

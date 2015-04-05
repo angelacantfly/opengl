@@ -180,7 +180,7 @@ void drawHat(GLfloat radius)
     glPushMatrix();
     glTranslatef(0, ytrans, 0);
         glutSolidSphere(topRadius, 10, 10);
-        if (HEADLAMPSTATUS) drawHeadLamp();
+//        if (HEADLAMPSTATUS) drawHeadLamp();
     glTranslatef(0, -ytrans, 0);
     glPopMatrix();
 
