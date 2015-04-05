@@ -9,16 +9,18 @@
 #include "avatar.h"
 #include "common.h"
 #include "main.h"
+
 using namespace std;
+
 GLfloat BOTTOM_RADIUS = 1.0;
 GLfloat EYE_RADIUS = 0.25 * BOTTOM_RADIUS;
 
-void drawFloor() {
-
+void drawFloor()
+{
     double originx = -5;
     double originy = -5;
     int color = 0;
-//        glNormal3f(0, 1, 0);
+    glPushMatrix();
     glRotatef(-90,1,0,0);
     glNormal3f(0,0,1);
     for (int row = 0 ; row < 5; ++row)
@@ -28,6 +30,7 @@ void drawFloor() {
             tileFloor(originx + 2 * row, originy + 2 * col, originx + 2 * (row + 1), originy + 2* (col + 1), color%2, color%2, color%2);
         }
     glRotatef(90,1,0,0);
+    glPopMatrix();
 }
 
 void tileFloor(double x1, double y1, double x2, double y2, double r, double g, double b)
@@ -74,12 +77,13 @@ void drawArm(bool isLeft) {
 }
 
 void drawHead() {
-    GLfloat red[] = {1,1,1};
-    glColor3fv(red);
+    GLfloat white[] = {1,1,1};
+    glColor3fv(white);
+    
     glPushMatrix();
     glTranslatef(0,1.9*BOTTOM_RADIUS,0);
-    glRotatef(head_theta,1,0,0);
-    glRotatef(head_beta,0,1,0);
+    glRotatef(head_theta,1,0,0);    // look up and down
+    glRotatef(head_beta,0,1,0);     // look left and right
         glutSolidSphere(BOTTOM_RADIUS*0.5, 20, 20); // head
         drawHat(BOTTOM_RADIUS);                     // hat
         drawEye(true);                              // left eye
@@ -115,7 +119,7 @@ void drawEarring(bool isLeft)
     
     glPushMatrix();
     
-    // position for each eye
+    // position of each eye
     if (isLeft) glTranslatef(-0.5,-0.25,0);
     else    glTranslatef(.5,-0.25,0);
     
@@ -127,10 +131,11 @@ void drawEarring(bool isLeft)
     glPopMatrix();
 }
 
-void drawTeapot(GLfloat radius)
+void drawSnowmanTeapot(GLfloat radius)
 {
     GLfloat purple[] = {0.5,0,0.5};
     glColor3fv(purple);
+    
     glPushMatrix();
     glTranslatef(0,radius/2,0);
     glScalef(.1,.1,.1);
@@ -148,6 +153,7 @@ void drawHat(GLfloat radius)
     GLfloat topRadius = 0.35;
     
     // left part of hat
+    glPushMatrix();
     glTranslatef(xtrans, ytrans, 0);
     glRotatef(-90, 1, 0, 0);
     glRotatef(angle, 0, 1, 0);
@@ -155,8 +161,10 @@ void drawHat(GLfloat radius)
     glRotatef(-angle, 0, 1, 0);
     glRotatef(90, 1, 0, 0);
     glTranslatef(-xtrans,-ytrans,0);
+    glPopMatrix();
     
     // right part of hat
+    glPushMatrix();
     xtrans = -xtrans;       // reflection of left part of hat
     angle = -angle;
     glTranslatef(xtrans, ytrans, 0);
@@ -166,14 +174,16 @@ void drawHat(GLfloat radius)
     glRotatef(-angle, 0, 1, 0);
     glRotatef(90, 1, 0, 0);
     glTranslatef(-xtrans,-ytrans,0);
+    glPopMatrix();
 
     // top part of hat
+    glPushMatrix();
     glTranslatef(0, ytrans, 0);
         glutSolidSphere(topRadius, 10, 10);
         if (HEADLAMPSTATUS) drawHeadLamp();
     glTranslatef(0, -ytrans, 0);
-    
-    
+    glPopMatrix();
+
 }
 
 void drawHeadLamp()
@@ -209,17 +219,33 @@ void drawHeadLamp()
     glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, 45.0);
     glLightf(GL_LIGHT1, GL_SPOT_EXPONENT, 5.0);
 
+//    glPushMatrix();
+//    glColor3f(1, 1, 0);             // yellow gem
+//    glTranslatef(0, 0, ztrans);
+//        glutSolidSphere(0.1, 5, 5); // star-shaped
+//    glTranslatef(0, 0, -ztrans);
+//    glPopMatrix();
+
 }
 
 void drawGenieMiddle() {
     // belly
+    GLfloat brightPurple[] = {1, 0.53, 0.84};
+    glColor3fv(brightPurple);
+    
+    glPushMatrix();
     glTranslatef(0, BOTTOM_RADIUS, 0);
     glRotatef(90,1,0,0);
         glutSolidTorus(BOTTOM_RADIUS/4, BOTTOM_RADIUS/3, 20, 20);
     glRotatef(-90,1,0,0);
     glTranslatef(0, -BOTTOM_RADIUS, 0);
+    glPopMatrix();
 
     // torso
+    GLfloat pink[] = {1, 0.76, 0.77};
+    glColor3fv(pink);
+    
+    glPushMatrix();
     glTranslatef(0,BOTTOM_RADIUS*1.5,0);
     glRotatef(90,1,0,0);
         GLUquadricObj *quadratic;
@@ -229,27 +255,32 @@ void drawGenieMiddle() {
         drawArm(true);  // left arm
         drawArm(false); // right arm
     glTranslatef(0,-BOTTOM_RADIUS*1.5,0);
+    glPopMatrix();
 }
 
 void drawGenieBottom()
 {
-    glColor3f(1, 1, 1);
+    GLfloat purple[] = {0.8, 0.42, 0.67};
+    glColor3fv(purple);
     
+    glPushMatrix();
     glTranslatef(0, BOTTOM_RADIUS, 0);
     glRotatef(90,1,0,0);
-        glutSolidCone(BOTTOM_RADIUS/2, BOTTOM_RADIUS, 20, 20);
+            glutSolidCone(BOTTOM_RADIUS/2, BOTTOM_RADIUS, 20, 20);
     glRotatef(-90,1,0,0);
     glTranslatef(0,-BOTTOM_RADIUS, 0);
+    glPopMatrix();
 }
 
 void drawGenieTeapot()
 {
     GLfloat yellow[] = {1,1,0};
     glColor3fv(yellow);
+    
     glPushMatrix();
-    glTranslatef(-1,0.25,0);
-    glScalef(.1,.1,.1);
-    glutSolidTeapot(3);
+        glTranslatef(-1,0.25,0);
+        glScalef(.1,.1,.1);
+        glutSolidTeapot(3);
     glPopMatrix();
 }
 

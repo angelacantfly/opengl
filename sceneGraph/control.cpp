@@ -34,8 +34,11 @@ void menu(int item)
     {
         case AMBIENT_LIGHT:
         {
+            // toggle
             AMBIENT = !AMBIENT;
             cout << "Toggle ambient light: " << (AMBIENT?"ON":"OFF") << endl;
+            
+            // enable or disable depending on current state of light
             if (AMBIENT)
             {
                 GLfloat light_ambient[] = { 0.2, 0.2, 0.2, 0.2};
@@ -50,16 +53,17 @@ void menu(int item)
         }
         case POINT_LIGHT:
         {
+            // toggle
             POINTLIGHT = !POINTLIGHT;
             cout << "Toggle point light: " << (POINTLIGHT?"ON":"OFF") << endl;
+            
+            // enable or disable depending on current state of light
             if (POINTLIGHT) {
                 glEnable(GL_LIGHT0);
             }
             else {
                 glDisable(GL_LIGHT0);
             }
-            glutPostRedisplay();
-            
             break;
         }
         case ROBOT_HEADLAMP:
@@ -129,20 +133,19 @@ void menu(int item)
 
 void mouse(int button, int state, int x, int y)
 {
-    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
-        cout << "Left click with cursor at" << x << " " << y << endl;
+//    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
+//        cout << "Left click with cursor at" << x << " " << y << endl;
 }
 
 void motion(int x, int y)
 {
-    cout << "Mouse at " << x << " " << y << endl;
-    glutPostRedisplay();
+//    cout << "Mouse at " << x << " " << y << endl;
+//    glutPostRedisplay();
 }
 
-// user controls position of snowman
+// user controls position of robot
 void special(int key, int x, int y)
 {
-    
     switch (key) {
         case GLUT_KEY_LEFT:
             AVATAR_POS_X--;
@@ -156,7 +159,6 @@ void special(int key, int x, int y)
         case GLUT_KEY_UP:
             AVATAR_POS_Z++;
             break;
-            
         default:
             break;
     }
@@ -173,7 +175,6 @@ void recalculateCameraPos()
 
 void keyboard(unsigned char key, int x, int y)
 {
-    
     switch (key) {
         case 'c':
             // nod down
