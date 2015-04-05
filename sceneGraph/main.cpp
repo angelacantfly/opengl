@@ -15,7 +15,7 @@ double alpha = 0.0;         // how much the robot turns head left and right
 double phi = 0 + EPSLON;  // camera view: up and down
 double beta = 0;           // camera view: left to right
 
-double head_theta = -90.0;    // how much the robot nods
+double head_theta = 0.0;    // how much the robot nods
 double head_beta = 0.0;
 
 double HEADLAMPHEIGHT = 0;  // position of head lamp
@@ -23,8 +23,9 @@ double WAVE_SWIM = 0;       // how much robot moves arms (front to back)
 double WAVE_UP_DOWN = 0;    // how much robot moves arms (up and down)
 
 // toggle lighting
-bool AMBIENT = true;
+bool AMBIENT = false;
 bool POINTLIGHT = false;
+bool HEADLAMPSTATUS = false;
 
 // toggle camera perspectie
 bool robotPerspective = false;
@@ -80,21 +81,25 @@ void init()
     glClearColor(0,0.5,0.5,0);
     
     // enable light0 and lighting
-//    glEnable(GL_LIGHT0);
     glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT1);
+//    glEnable(GL_LIGHT1);
     
-//    glEnable(GL_COLOR_MATERIAL);
-    
-    // position of light0
-//    GLfloat lightPosition[]={0,1,0,1};
-//    glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
+    glEnable(GL_COLOR_MATERIAL);
     
     // set color of light0
     GLfloat ambientWhite[] = {0.2,0.2,0.2,0.2};
     GLfloat white[] = {1,1,1,0};		      // light color
     glLightfv(GL_LIGHT0, GL_DIFFUSE, white);   // set diffuse light color
     glLightfv(GL_LIGHT0, GL_SPECULAR, white);  // set specular light color
+    
+    // set color of headlamp
+    GLfloat red[] = {1,0,0,0};		      // light color
+    GLfloat light_ambient[] = { 0.2, 0.2, 0.2, 0.2}; // ambient
+    GLfloat direction[] = {0, -1.0, 1.0};
+    glLightfv(GL_LIGHT1, GL_DIFFUSE, red);   // set diffuse light color
+    glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, direction);
+    glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, 45.0);
+    glLightf(GL_LIGHT1, GL_SPOT_EXPONENT, 5.0);
 
     
     // enable depth buffering
@@ -125,11 +130,24 @@ void display()
         gluLookAt(CAMERA_X, CAMERA_Y, CAMERA_Z, 0, 0, 0, 0, 1, 0);
     }
     
+    if (HEADLAMPSTATUS) glEnable(GL_LIGHT1);
+    else glDisable(GL_LIGHT1);
     
+    if (AMBIENT) {
+        GLfloat ambientWhite[] = {0.2,0.2,0.2,0.2};
+        glLightfv(GL_LIGHTING, GL_AMBIENT, ambientWhite);
+    }
+    else {
+        GLfloat noambient[] = {0,0,0,0};
+        glLightfv(GL_LIGHTING, GL_AMBIENT, noambient);
+    }
     
     // SET POINT LIGHT POSITION
     GLfloat lightPosition[]={0,3,0,1};
     glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
+    
+    if (POINTLIGHT) glEnable(GL_LIGHT0);
+    else glDisable(GL_LIGHT0);
     
     drawFloor();
     drawGenie();
@@ -150,10 +168,6 @@ void drawGenie() {
     }
 
     glColor3f(1, 0, 0);
-
-    //    // enable light1 and lighting
-
-    //
     double BOTTOM_RADIUS = 1;
         // position of light1
         GLfloat ypos = 1.9 * BOTTOM_RADIUS + 0.5;
@@ -163,9 +177,10 @@ void drawGenie() {
     GLfloat hx, hy, hz;
     hx = AVATAR_POS_X;
     hy = 1.9 * BOTTOM_RADIUS + 0.5 * cos(head_theta/180 * M_PI);
-    hz = AVATAR_POS_Z + 0.4 + 0.4 * sin(head_theta)* sin(head_beta) ;
+    hz = AVATAR_POS_Z + 0.4 + 0.4 * sin(head_theta/180 * M_PI)* cos(head_beta/180 * M_PI) ;
     cout << "head_beta : " << head_beta << endl;
     cout << "head_theta : " << head_theta << endl;
+    cout << "hy " << hy << "     hz " << hz<<endl;
 //    glTranslatef(static_cast<GLfloat>(AVATAR_POS_X), ypos, zpos);
     glTranslatef(hx, hy, zpos);
     glutSolidSphere(0.1, 5, 5);
@@ -180,7 +195,7 @@ void drawGenie() {
         glLightfv(GL_LIGHT1, GL_DIFFUSE, white);   // set diffuse light color
         //glLightfv(GL_LIGHT1, GL_SPECULAR, white);  // set specular light color
         //glLightfv(GL_LIGHT1, GL_AMBIENT, ambientWhite);
-        //glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, direction);
+        glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, direction);
     glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, 45.0);
     glLightf(GL_LIGHT1, GL_SPOT_EXPONENT, 5.0);
 

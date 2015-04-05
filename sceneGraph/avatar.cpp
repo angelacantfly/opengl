@@ -170,39 +170,44 @@ void drawHat(GLfloat radius)
     // top part of hat
     glTranslatef(0, ytrans, 0);
         glutSolidSphere(topRadius, 10, 10);
-        drawHeadLamp(topRadius);
+        if (HEADLAMPSTATUS) drawHeadLamp();
     glTranslatef(0, -ytrans, 0);
     
     
 }
 
-void drawHeadLamp(GLfloat ztrans)
+void drawHeadLamp()
 {
-    glColor3f(1, 1, 0);             // yellow gem
-    glTranslatef(0, 0, ztrans);
-        glutSolidSphere(0.1, 5, 5); // star-shaped
-    glTranslatef(0, 0, -ztrans);
+    glColor3f(1, 0, 0);
+    double BOTTOM_RADIUS = 1;
+    // position of light1
+    GLfloat ypos = 1.9 * BOTTOM_RADIUS + 0.5;
+    GLfloat zpos = AVATAR_POS_Z + 0.3 + 0.1 ;
+    GLfloat lightPosition[]={0,ypos,0,1};
     
+    GLfloat hx, hy, hz;
+    hx = AVATAR_POS_X;
+    hy = 1.9 * BOTTOM_RADIUS + 0.5 * cos(head_theta/180 * M_PI);
+    hz = AVATAR_POS_Z + 0.4 + 0.4 * sin(head_theta)* sin(head_beta) ;
+    cout << "head_beta : " << head_beta << endl;
+    cout << "head_theta : " << head_theta << endl;
+    //    glTranslatef(static_cast<GLfloat>(AVATAR_POS_X), ypos, zpos);
+    glTranslatef(hx, hy, zpos);
+    glutSolidSphere(0.1, 5, 5);
     
-//    // enable light1 and lighting
-//    glEnable(GL_LIGHT1);
-//    
-//    // position of light1
-//    GLfloat ypos = 3 * BOTTOM_RADIUS + 0.5;
-////    ypos += 30.0;
-//    GLfloat zpos = AVATAR_POS_Z + 0.5 + 0.2;
-////    zpos = AVATAR_POS_Z + 3;
-//    GLfloat lightPosition[]={static_cast<GLfloat>(AVATAR_POS_X),ypos,zpos,1};
-//    
-//    // set color of light0
-//    GLfloat ambientWhite[] = {0.2,0.2,0.2,0.2};
-//    GLfloat white[] = {1,1,0,0};		      // light color
-//    GLfloat light_ambient[] = { 0.2, 0.2, 0.2, 0.2}; // ambient
-////    GLfloat direction[] = {0, 0, 1.0};
-//    glLightfv(GL_LIGHT1, GL_DIFFUSE, white);   // set diffuse light color
-//    glLightfv(GL_LIGHT1, GL_SPECULAR, white);  // set specular light color
-//    glLightfv(GL_LIGHT1, GL_AMBIENT, ambientWhite);
-////    glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, direction);
+    GLfloat lightpos[] = {hx,hy,zpos,1};
+    // set color of light0
+    GLfloat ambientWhite[] = {0.2,0.2,0.2,0.2};
+    GLfloat white[] = {1,0,0,0};		      // light color
+    GLfloat light_ambient[] = { 0.2, 0.2, 0.2, 0.2}; // ambient
+    GLfloat direction[] = {0, -1.0, 1.0};
+    glLightfv(GL_LIGHT1, GL_POSITION, lightpos);
+    glLightfv(GL_LIGHT1, GL_DIFFUSE, white);   // set diffuse light color
+    //glLightfv(GL_LIGHT1, GL_SPECULAR, white);  // set specular light color
+    //glLightfv(GL_LIGHT1, GL_AMBIENT, ambientWhite);
+    glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, direction);
+    glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, 45.0);
+    glLightf(GL_LIGHT1, GL_SPOT_EXPONENT, 5.0);
 
 }
 

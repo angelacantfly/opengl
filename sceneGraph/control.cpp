@@ -19,6 +19,7 @@ void make_menu()
     // Add menu items
     glutAddMenuEntry("Toggle Ambient Light", AMBIENT_LIGHT);
     glutAddMenuEntry("Toggle Point Light", POINT_LIGHT);
+    glutAddMenuEntry("Toggle Robot Headlamp", ROBOT_HEADLAMP);
     glutAddMenuEntry("Toggle to Robot Perspective", ROBOT_PERSPECTIVE);
     glutAddMenuEntry("Help with Camera Control", HELP_CAMERA);
     glutAddMenuEntry("Help with Robot Control", HELP_ROBOT);
@@ -61,9 +62,19 @@ void menu(int item)
             
             break;
         }
+        case ROBOT_HEADLAMP:
+        {
+            HEADLAMPSTATUS = !HEADLAMPSTATUS;
+            cout << "Toggle head light: " << (HEADLAMPSTATUS?"ON":"OFF") << endl;
+            glutPostRedisplay();
+            break;
+        }
         case ROBOT_PERSPECTIVE:
         {
-            robotPerspective = true;
+            robotPerspective = !robotPerspective;
+            cout << "Toggle to robot's perspective: " << (robotPerspective?"ON":"OFF") << endl;
+            glutPostRedisplay();
+            break;
         }
         case HELP_CAMERA:
         {
@@ -167,14 +178,14 @@ void keyboard(unsigned char key, int x, int y)
         case 'c':
             // nod down
             head_theta += 5;
-//            if (head_theta > 90)
-//                head_theta = 90;
+            if (head_theta > 90)
+                head_theta = 90;
             break;
         case 'C':
             // nod up
             head_theta -= 5;
-//            if (head_theta < -90)
-//                head_theta = -90;
+            if (head_theta < -90)
+                head_theta = -90;
             break;
         case 'v':
             // head turn left
@@ -225,28 +236,30 @@ void keyboard(unsigned char key, int x, int y)
         case 'w':
             // camera look up
             phi -=(double)CAMERA_SPIN/ (double)windowHeight;
+            if (phi < 0)
+                phi = 0 + EPSLON;
             recalculateCameraPos();
             cout << "look up: " << phi << endl;
             break;
         case 'W':
             // camera look up
             phi -=(double)CAMERA_BIG_SPIN/ (double)windowHeight;
-//            if (phi < 0)
-//                phi = 0 + EPSLON;
+            if (phi < 0)
+                phi = 0 + EPSLON;
             recalculateCameraPos();
             cout << "fast look up: " << phi << endl;
             break;
         case 's':
             phi += (double)CAMERA_SPIN/ (double)windowHeight;
-//            if (phi > M_PI)
-//                phi = M_PI;
+            if (phi > M_PI)
+                phi = M_PI;
             recalculateCameraPos();
             cout << "look down: " << phi << endl;
             break;
         case 'S':
             phi +=(double)CAMERA_BIG_SPIN/ (double)windowHeight;
-//            if (phi > M_PI)
-//                phi = M_PI;
+            if (phi > M_PI)
+                phi = M_PI;
             recalculateCameraPos();
             cout << "fast look down: " << phi << endl;
             break;

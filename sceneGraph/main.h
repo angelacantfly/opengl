@@ -47,6 +47,7 @@ extern double beta;
 // toggle lights
 extern bool AMBIENT;
 extern bool POINTLIGHT;
+extern bool HEADLAMPSTATUS;
 
 // toggle view
 extern bool robotPerspective;
