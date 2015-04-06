@@ -64,6 +64,12 @@ void keyboard(unsigned char key, int x, int y);
 void drawGenie();
 void drawEverythingWithShadow();
 
+// billboard
+void billboardBegin();
+void billboardEnd();
+void drawBillboard();
 
+// texture mapping
+bool LoadGLTextures(char* fname);
 
 #endif

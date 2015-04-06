@@ -3,6 +3,7 @@
 #include "control.h"
 #include "avatar.h"
 #include "shadow.h"
+#include "SOIL.h"
 
 // global variables
 using namespace std;
@@ -107,6 +108,12 @@ void init()
     glEnable(GL_DEPTH_TEST);
     // initialize stencil clear value
     glClearStencil(0.0);
+    
+    // texture mapping: billboard
+    LoadGLTextures("/Users/maureennaval/Desktop/opengl/sceneGraph/tajMahal.png");
+    
+    // initialize stencil clear value
+    glClearStencil(0.0);
 }
 
 
@@ -168,6 +175,11 @@ void display()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     
     drawEverythingWithShadow();
+    
+    // billboard
+    glEnable(GL_TEXTURE_2D);
+        drawBillboard();
+    glDisable(GL_TEXTURE_2D);
     
     glPopMatrix();
     glutSwapBuffers();
@@ -256,4 +268,78 @@ void _drawFloor(void)
     glEnd();
 }
 
+void billboardBegin() {
+    
+        float modelview[16];
+        int i,j;
+    
+        // save the current modelview matrix
+        glPushMatrix();
+    
+        // get the current modelview matrix
+    glGetFloatv(GL_MODELVIEW_MATRIX , modelview);
+    
+        // undo all rotations
+        // beware all scaling is lost as well
+        for( i=0; i<3; i++ )
+                for( j=0; j<3; j++ ) {
+                        if ( i==j )
+                                modelview[i*4+j] = 1.0;
+                        else
+                                modelview[i*4+j] = 0.0;
+                    }
+    
+        // set the modelview with no rotations
+        glLoadMatrixf(modelview);
+}
 
+void billboardEnd() {
+    
+        // restore the previously
+        // stored modelview matrix
+        glPopMatrix();
+}
+
+void drawBillboard() {
+        billboardBegin();
+    
+        glPushMatrix();
+    glTranslatef(0, 0, -5);
+            glBegin(GL_QUADS);
+            // bottom left corner
+            glTexCoord2f(0, 0);
+            glVertex3f(-6, 0, -5);
+        // top left corner
+            glTexCoord2f(0, 1);
+            glVertex3f(-6, 5, -5);
+        // top right corner
+            glTexCoord2f(1, 1);
+            glVertex3f(6, 5, -5);
+            // bottom right corner
+            glTexCoord2f(1, 0);
+            glVertex3f(6, 0, -5);
+            glEnd();
+        glTranslatef(0, 0, 5);
+        glPopMatrix();
+    
+        billboardEnd();
+}
+
+bool LoadGLTextures(char* fname)
+{
+        int textureId = SOIL_load_OGL_texture(fname, SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
+        if(textureId == 0)
+                return false;
+    
+        // tell what texture to use
+        glBindTexture(GL_TEXTURE_2D, textureId);
+    
+        // specify resampling method
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+
+        // how texture should be used
+        glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+    
+    return true;
+}
