@@ -24,5 +24,5 @@ void drawHeadLamp();
 void drawGenieMiddle();
 void drawGenieBottom();
 void drawGenieTeapot();
-
+void drawSpotLight();
 #endif /* defined(__sceneGraph__avatar__) */

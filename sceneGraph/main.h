@@ -29,6 +29,8 @@ extern double CAMERA_Z;
 extern double CAMERA_Y;
 extern double VIEW_RADIUS;
 
+// Global point light position
+extern GLfloat lightPosition[];
 // position of head lamp
 extern double HEADLAMPHEIGHT;
 
@@ -59,10 +61,9 @@ void menu(int);
 void keyboard(unsigned char key, int x, int y);
 
 // robots
-void drawSnowman();
 void drawGenie();
+void drawEverythingWithShadow();
 
-void drawSpotLight();
 
 
 #endif

@@ -2,6 +2,7 @@
 #include "main.h"
 #include "control.h"
 #include "avatar.h"
+#include "shadow.h"
 
 // global variables
 using namespace std;
@@ -26,6 +27,7 @@ double WAVE_UP_DOWN = 0;    // how much robot moves arms (up and down)
 bool AMBIENT = false;
 bool POINTLIGHT = false;
 bool HEADLAMPSTATUS = false;
+GLfloat lightPosition[]={0,3,0,1};
 
 // toggle camera perspective
 bool robotPerspective = false;
@@ -45,10 +47,10 @@ int main(int argc, char **argv)
     glutInitWindowSize(windowWidth,windowHeight);
     
     // establish glut display parameters
-    glutInitDisplayMode(GLUT_DOUBLE   | GLUT_RGB  |GLUT_DEPTH);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH | GLUT_STENCIL);
     
     // create window
-    glutCreateWindow("My Third OpenGL program");
+    glutCreateWindow("Genie's Great Adventure");
     
     make_menu();
     
@@ -75,11 +77,13 @@ void init()
     glLoadIdentity();
     gluPerspective(20.0, 1.0, 1, 100.0);
     glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
+//    glLoadIdentity();
     
     // initialize background color to purple
     glClearColor(0.44,0.24,0.37,0);
-
+    // initialize shade model to smooth
+    glShadeModel(GL_SMOOTH);
+    
     // enable light0 and lighting
     glEnable(GL_LIGHTING);
 
@@ -101,6 +105,8 @@ void init()
 
     // enable depth buffering
     glEnable(GL_DEPTH_TEST);
+    // initialize stencil clear value
+    glClearStencil(0.0);
 }
 
 
@@ -115,6 +121,12 @@ void reshape(int width, int height)
 
 void display()
 {
+    // check for openGL errors
+    GLenum errCode;
+    if ((errCode = glGetError()) != GL_NO_ERROR)
+        cout << gluErrorString(errCode) << endl;
+    glPopMatrix();
+    
     // clear buffers
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
@@ -133,6 +145,7 @@ void display()
         GLfloat headLampZ = AVATAR_POS_Z  + 0.7 * sin((head_theta+ angle)/180 * M_PI)* cos(head_beta/180 * M_PI) ;
         gluLookAt(headLampX, headLampY + 2, headLampZ, headLampX , 0, headLampZ + 3, 0, 1,0);
     }
+    glPushMatrix();
 
     if (HEADLAMPSTATUS) glEnable(GL_LIGHT1);
     else glDisable(GL_LIGHT1);
@@ -147,22 +160,22 @@ void display()
     }
     
     // SET POINT LIGHT POSITION
-    GLfloat lightPosition[]={0,3,0,1};
     glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
-    
     if (POINTLIGHT) glEnable(GL_LIGHT0);
     else glDisable(GL_LIGHT0);
     
-    drawFloor();
-    drawGenie();
+    // clear buffers
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     
+    drawEverythingWithShadow();
+    
+    glPopMatrix();
     glutSwapBuffers();
 }
 
 
-void drawGenie() {
-    
 
+void drawGenie() {
     // regular view
     if (!robotPerspective) {
         // draw genie's body parts
@@ -174,48 +187,73 @@ void drawGenie() {
         glTranslatef(-AVATAR_POS_X,0,-AVATAR_POS_Z);
         drawSpotLight();
     }
-    
 }
 
+void drawEverythingWithShadow() {
+    glEnable(GL_POLYGON_OFFSET_FILL);
+    glPolygonOffset(-1,-1);
+    
+    // disable buffers
+    glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+    glDisable(GL_DEPTH_TEST);
+    glEnable(GL_STENCIL_TEST);
+    glStencilFunc(GL_EQUAL,0,3);
+    glStencilOp(GL_KEEP, GL_KEEP, GL_INCR);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
+    
+    // draw floor
+    float floorDiffuse[]={1.0,0.0,0.0};
+    float floorAmbient[]={1.0,0.0,0.0};
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, floorDiffuse);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, floorDiffuse);
+    drawFloor();
+    
+    // enable buffers
+    glEnable(GL_DEPTH_TEST);
+    glDisable(GL_STENCIL_TEST);
+    glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+    glDisable(GL_CULL_FACE);
+    
+    // disable buffers
+    glEnable(GL_STENCIL_TEST);
+    glStencilFunc(GL_EQUAL, 1, 3);
+    glStencilOp(GL_KEEP,GL_KEEP,GL_KEEP);
+    
+    // shadow
+    GLfloat shadowMat[16];
+    GLfloat groundplane[4]={0,1,0,0};
+    shadowMatrixPointLight(shadowMat, groundplane, lightPosition);
+    glPushMatrix();
+    glMultMatrixf(shadowMat);
+    GLfloat black[4]={0,0,0,0};
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, black);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, black);
+    drawGenie();
+    glPopMatrix();
+    //enable buffers
+    glDisable(GL_STENCIL_TEST);
+    
+    drawGenie();
+    
+    glDisable(GL_POLYGON_OFFSET_FILL);
+    
+    
+    // draw floor
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, floorDiffuse);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, floorDiffuse);
+    drawFloor();
 
-
-void drawSpotLight()
+}
+void _drawFloor(void)
 {
-    double BOTTOM_RADIUS = 1;
-    
-    // position of head lamp marker
-    // FIXME: the headlamp is not completely in sync with the head rotation
-    //          when the head turns into weird angle
-    GLfloat angle = atan2f(0.25, 0.5) *180/M_PI;
-    GLfloat length = 0.6;
-    GLfloat headLampX = AVATAR_POS_X + length *sin(head_beta/180*M_PI);
-    GLfloat headLampY = 1.9 * BOTTOM_RADIUS + length* cos((head_theta + angle)/180 * M_PI);
-    GLfloat headLampZ = AVATAR_POS_Z  + length * sin((head_theta+ angle)/180 * M_PI)* cos(head_beta/180 * M_PI) ;
-    
-    // draw head lamp marker
-    glTranslatef(headLampX, headLampY, headLampZ);
-    glRotatef(head_beta,0,1,0);     // move with head left and right
-    glRotatef(head_theta,1,0,0);    // move with head up and down
-    
-        glColor3f(1, 0, 0);            // red
-        glutSolidSphere(0.1, 5, 5);    // star-shaped
-    glRotatef(-head_theta,1,0,0);    // look up and down
-    glRotatef(-head_beta,0,1,0);     // look left and right
-    glTranslatef(-headLampX, -headLampY, -headLampZ);
-    
-    
-    // spot light properties
-    GLfloat spotLightPosition[] = {headLampX,headLampY, headLampZ, 1};
-    GLfloat yellow[] = {1,1,0,0};
-    GLfloat direction[] = {static_cast<GLfloat>(1.0 * sin(head_beta/180*M_PI)) ,
-                            -1.0,
-                            static_cast<GLfloat>(1.0 * cos(head_beta/180 * M_PI))};
-    
-    glLightfv(GL_LIGHT1, GL_POSITION, spotLightPosition);
-    glLightfv(GL_LIGHT1, GL_DIFFUSE, yellow);   // set diffuse light color
-    glLightfv(GL_LIGHT1, GL_SPECULAR, yellow);  // set specular light color
-    
-    glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, direction);
-    
+    glNormal3f(0,1,0);
+    glBegin(GL_QUADS);
+    glVertex3f(-5,0,-5);
+    glVertex3f(-5,0,5);
+    glVertex3f(5,0,5);
+    glVertex3f(5,0,-5);
+    glEnd();
 }
+
 

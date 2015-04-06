@@ -17,14 +17,14 @@ GLfloat EYE_RADIUS = 0.25 * BOTTOM_RADIUS;
 
 void drawFloor()
 {
-    double originx = -5;
-    double originy = -5;
+    double originx = -9;
+    double originy = -9;
     int color = 0;
     glPushMatrix();
     glRotatef(-90,1,0,0);
     glNormal3f(0,0,1);
-    for (int row = 0 ; row < 5; ++row)
-        for (int col = 0; col < 5; ++ col)
+    for (int row = 0 ; row < 9; ++row)
+        for (int col = 0; col < 9; ++ col)
         {
             color ++;
             tileFloor(originx + 2 * row, originy + 2 * col, originx + 2 * (row + 1), originy + 2* (col + 1), color%2, color%2, color%2);
@@ -199,9 +199,6 @@ void drawHeadLamp()
     hx = AVATAR_POS_X;
     hy = 1.9 * BOTTOM_RADIUS + 0.5 * cos(head_theta/180 * M_PI);
     hz = AVATAR_POS_Z + 0.4 + 0.4 * sin(head_theta)* sin(head_beta) ;
-    cout << "head_beta : " << head_beta << endl;
-    cout << "head_theta : " << head_theta << endl;
-    //    glTranslatef(static_cast<GLfloat>(AVATAR_POS_X), ypos, zpos);
     glTranslatef(hx, hy, zpos);
     glutSolidSphere(0.1, 5, 5);
     
@@ -213,18 +210,10 @@ void drawHeadLamp()
     GLfloat direction[] = {0, -1.0, 1.0};
     glLightfv(GL_LIGHT1, GL_POSITION, lightpos);
     glLightfv(GL_LIGHT1, GL_DIFFUSE, white);   // set diffuse light color
-    //glLightfv(GL_LIGHT1, GL_SPECULAR, white);  // set specular light color
-    //glLightfv(GL_LIGHT1, GL_AMBIENT, ambientWhite);
     glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, direction);
     glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, 45.0);
     glLightf(GL_LIGHT1, GL_SPOT_EXPONENT, 5.0);
 
-//    glPushMatrix();
-//    glColor3f(1, 1, 0);             // yellow gem
-//    glTranslatef(0, 0, ztrans);
-//        glutSolidSphere(0.1, 5, 5); // star-shaped
-//    glTranslatef(0, 0, -ztrans);
-//    glPopMatrix();
 
 }
 
@@ -284,3 +273,42 @@ void drawGenieTeapot()
     glPopMatrix();
 }
 
+void drawSpotLight()
+{
+    double BOTTOM_RADIUS = 1;
+    
+    // position of head lamp marker
+    // FIXME: the headlamp is not completely in sync with the head rotation
+    //          when the head turns into weird angle
+    GLfloat angle = atan2f(0.25, 0.5) *180/M_PI;
+    GLfloat length = 0.6;
+    GLfloat headLampX = AVATAR_POS_X + length *sin(head_beta/180*M_PI);
+    GLfloat headLampY = 1.9 * BOTTOM_RADIUS + length* cos((head_theta + angle)/180 * M_PI);
+    GLfloat headLampZ = AVATAR_POS_Z  + length * sin((head_theta+ angle)/180 * M_PI)* cos(head_beta/180 * M_PI) ;
+    
+    // draw head lamp marker
+    glTranslatef(headLampX, headLampY, headLampZ);
+    glRotatef(head_beta,0,1,0);     // move with head left and right
+    glRotatef(head_theta,1,0,0);    // move with head up and down
+    
+    glColor3f(1, 0, 0);            // red
+    glutSolidSphere(0.1, 5, 5);    // star-shaped
+    glRotatef(-head_theta,1,0,0);    // look up and down
+    glRotatef(-head_beta,0,1,0);     // look left and right
+    glTranslatef(-headLampX, -headLampY, -headLampZ);
+    
+    
+    // spot light properties
+    GLfloat spotLightPosition[] = {headLampX,headLampY, headLampZ, 1};
+    GLfloat yellow[] = {1,1,0,0};
+    GLfloat direction[] = {static_cast<GLfloat>(1.0 * sin(head_beta/180*M_PI)) ,
+        -1.0,
+        static_cast<GLfloat>(1.0 * cos(head_beta/180 * M_PI))};
+    
+    glLightfv(GL_LIGHT1, GL_POSITION, spotLightPosition);
+    glLightfv(GL_LIGHT1, GL_DIFFUSE, yellow);   // set diffuse light color
+    glLightfv(GL_LIGHT1, GL_SPECULAR, yellow);  // set specular light color
+    
+    glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, direction);
+    
+}
