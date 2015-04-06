@@ -10,6 +10,7 @@
 		292D10B91ABF6680007A4F2F /* control.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 292D10B71ABF6680007A4F2F /* control.cpp */; settings = {COMPILER_FLAGS = "-w"; }; };
 		292D10BF1ABFC554007A4F2F /* avatar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 292D10BD1ABFC554007A4F2F /* avatar.cpp */; };
 <<<<<<< HEAD
+<<<<<<< HEAD
 		9062015E1AD25735008CA8DC /* image_DXT.c in Sources */ = {isa = PBXBuildFile; fileRef = 906201541AD25735008CA8DC /* image_DXT.c */; };
 		9062015F1AD25735008CA8DC /* image_helper.c in Sources */ = {isa = PBXBuildFile; fileRef = 906201561AD25735008CA8DC /* image_helper.c */; };
 		906201601AD25735008CA8DC /* SOIL.c in Sources */ = {isa = PBXBuildFile; fileRef = 906201581AD25735008CA8DC /* SOIL.c */; };
@@ -17,6 +18,8 @@
 =======
 		299324381AD2535F0080725C /* shadow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 299324361AD2535F0080725C /* shadow.cpp */; };
 >>>>>>> 9742506e046ae913ca33b50662fbc476ae09c2b5
+=======
+>>>>>>> parent of 9742506... Shadow is working
 		90910D091AB22E850089FCBA /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 90910D081AB22E850089FCBA /* main.cpp */; settings = {COMPILER_FLAGS = "-w"; }; };
 		90910D101AB22E930089FCBA /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90910D0F1AB22E930089FCBA /* OpenGL.framework */; };
 		90910D121AB22E980089FCBA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90910D111AB22E980089FCBA /* Cocoa.framework */; };
@@ -43,6 +46,7 @@
 		292D10BD1ABFC554007A4F2F /* avatar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = avatar.cpp; sourceTree = "<group>"; };
 		292D10BE1ABFC554007A4F2F /* avatar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = avatar.h; sourceTree = "<group>"; };
 <<<<<<< HEAD
+<<<<<<< HEAD
 		906201541AD25735008CA8DC /* image_DXT.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = image_DXT.c; path = ../../../Downloads/SOILArchive/image_DXT.c; sourceTree = "<group>"; };
 		906201551AD25735008CA8DC /* image_DXT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = image_DXT.h; path = ../../../Downloads/SOILArchive/image_DXT.h; sourceTree = "<group>"; };
 		906201561AD25735008CA8DC /* image_helper.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = image_helper.c; path = ../../../Downloads/SOILArchive/image_helper.c; sourceTree = "<group>"; };
@@ -57,6 +61,8 @@
 		299324361AD2535F0080725C /* shadow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = shadow.cpp; sourceTree = "<group>"; };
 		299324371AD2535F0080725C /* shadow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shadow.h; sourceTree = "<group>"; };
 >>>>>>> 9742506e046ae913ca33b50662fbc476ae09c2b5
+=======
+>>>>>>> parent of 9742506... Shadow is working
 		90910D051AB22E850089FCBA /* sceneGraph */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = sceneGraph; sourceTree = BUILT_PRODUCTS_DIR; };
 		90910D081AB22E850089FCBA /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		90910D0F1AB22E930089FCBA /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
@@ -100,8 +106,8 @@
 		90910D071AB22E850089FCBA /* sceneGraph */ = {
 			isa = PBXGroup;
 			children = (
-				292D10BA1ABF72CE007A4F2F /* main.h */,
 				90910D081AB22E850089FCBA /* main.cpp */,
+<<<<<<< HEAD
 <<<<<<< HEAD
 				906201541AD25735008CA8DC /* image_DXT.c */,
 				906201551AD25735008CA8DC /* image_DXT.h */,
@@ -117,8 +123,11 @@
 				299324361AD2535F0080725C /* shadow.cpp */,
 				299324371AD2535F0080725C /* shadow.h */,
 >>>>>>> 9742506e046ae913ca33b50662fbc476ae09c2b5
+=======
+>>>>>>> parent of 9742506... Shadow is working
 				292D10BD1ABFC554007A4F2F /* avatar.cpp */,
 				292D10BE1ABFC554007A4F2F /* avatar.h */,
+				292D10BA1ABF72CE007A4F2F /* main.h */,
 				292D10B71ABF6680007A4F2F /* control.cpp */,
 				292D10B81ABF6680007A4F2F /* control.h */,
 				292D10BC1ABF78E7007A4F2F /* common.h */,
@@ -183,7 +192,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				292D10BF1ABFC554007A4F2F /* avatar.cpp in Sources */,
-				299324381AD2535F0080725C /* shadow.cpp in Sources */,
 				90910D091AB22E850089FCBA /* main.cpp in Sources */,
 				906201611AD25735008CA8DC /* stb_image_aug.c in Sources */,
 				906201601AD25735008CA8DC /* SOIL.c in Sources */,
