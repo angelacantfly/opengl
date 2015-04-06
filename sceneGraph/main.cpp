@@ -110,7 +110,7 @@ void init()
     glClearStencil(0.0);
     
     // texture mapping: billboard
-    LoadGLTextures("/Users/maureennaval/Desktop/opengl/sceneGraph/tajMahal.png");
+    LoadGLTextures("/Users/owlroro/Desktop/opengl/sceneGraph/tajMahal.png");
     
     // initialize stencil clear value
     glClearStencil(0.0);
@@ -304,6 +304,7 @@ void drawBillboard() {
         billboardBegin();
     
         glPushMatrix();
+    glColor4f(0.44,0.24,0.37,0);
     glTranslatef(0, 0, -5);
             glBegin(GL_QUADS);
             // bottom left corner
