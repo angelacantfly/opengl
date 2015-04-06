@@ -63,8 +63,8 @@ void drawSnowman();
 void drawGenie();
 
 void drawSpotLight();
-void drawMagicBall();
 
+<<<<<<< HEAD
 
 // billboard
 void billboardBegin();
@@ -73,5 +73,7 @@ void drawBillboard();
 
 // texture mapping
 bool LoadGLTextures(char* fname);
+=======
+>>>>>>> parent of 4305b55... billboard
 
 #endif
