@@ -63,6 +63,14 @@ void drawSnowman();
 void drawGenie();
 
 void drawSpotLight();
+void drawMagicBall();
 
+// billboard
+void billboardBegin();
+void billboardEnd();
+void drawBillboard();
+
+// texture mapping
+bool LoadGLTextures(char* fname);
 
 #endif
