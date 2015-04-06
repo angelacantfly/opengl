@@ -2,11 +2,6 @@
 #include "main.h"
 #include "control.h"
 #include "avatar.h"
-<<<<<<< HEAD
-#include "SOIL.h"
-#include "shadow.h"
-=======
->>>>>>> parent of 4305b55... billboard
 
 // global variables
 using namespace std;
@@ -106,16 +101,6 @@ void init()
 
     // enable depth buffering
     glEnable(GL_DEPTH_TEST);
-<<<<<<< HEAD
-
-
-    // texture mapping: billboard
-    LoadGLTextures("/Users/maureennaval/Desktop/opengl/sceneGraph/tajMahal.png");
-    // initialize stencil clear value
-    glClearStencil(0.0);
-
-=======
->>>>>>> parent of 4305b55... billboard
 }
 
 
@@ -146,7 +131,7 @@ void display()
         GLfloat headLampX = AVATAR_POS_X + length *sin(head_beta/180*M_PI);
         GLfloat headLampY = 1.9 * 1.0 + length* cos((head_theta + angle)/180 * M_PI);
         GLfloat headLampZ = AVATAR_POS_Z  + 0.7 * sin((head_theta+ angle)/180 * M_PI)* cos(head_beta/180 * M_PI) ;
-        gluLookAt(headLampX, headLampY + 2, headLampZ, headLampX , 0, headLampZ + 3, 0, 1,0);
+        gluLookAt(headLampX, headLampY, headLampZ, 0, 0, 0, 0, 1,0);
     }
 
     if (HEADLAMPSTATUS) glEnable(GL_LIGHT1);
@@ -171,15 +156,6 @@ void display()
     drawFloor();
     drawGenie();
     
-<<<<<<< HEAD
-    // billboard
-    glEnable(GL_TEXTURE_2D);
-    drawBillboard();
-    glDisable(GL_TEXTURE_2D);
-    glPopMatrix();
-    
-=======
->>>>>>> parent of 4305b55... billboard
     glutSwapBuffers();
 }
 

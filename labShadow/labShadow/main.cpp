@@ -157,11 +157,9 @@ void display()
     // disable buffers
     glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
     glDisable(GL_DEPTH_TEST);
-    // enable stencil test
     glEnable(GL_STENCIL_TEST);
     glStencilFunc(GL_EQUAL,0,3);
     glStencilOp(GL_KEEP, GL_KEEP, GL_INCR);
-    // enable face cull
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
     // draw floor
@@ -172,13 +170,11 @@ void display()
     drawFloor();
     // enable buffers
     glEnable(GL_DEPTH_TEST);
-    glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-    // disable stencil test
     glDisable(GL_STENCIL_TEST);
-    // disable face cull
+    glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
     glDisable(GL_CULL_FACE);
     
-    // enable stencil test: shadow
+    // disable buffers
     glEnable(GL_STENCIL_TEST);
     glStencilFunc(GL_EQUAL, 1, 3);
     glStencilOp(GL_KEEP,GL_KEEP,GL_KEEP);
@@ -193,17 +189,10 @@ void display()
     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, black);
     drawCube();
     glPopMatrix();
-    // disable stencil test: shadow
+    //enable buffers
     glDisable(GL_STENCIL_TEST);
     
-    // enable stencil test: cube
-    glEnable(GL_STENCIL_TEST);
-    glStencilFunc(GL_EQUAL, 1, 3);
-    glStencilOp(GL_KEEP,GL_KEEP,GL_KEEP);
-    // cube
     drawCube();
-    // disable stencil test: cube
-    glDisable(GL_STENCIL_TEST);
     
     glDisable(GL_POLYGON_OFFSET_FILL);
 

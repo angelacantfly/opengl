@@ -64,16 +64,5 @@ void drawGenie();
 
 void drawSpotLight();
 
-<<<<<<< HEAD
-
-// billboard
-void billboardBegin();
-void billboardEnd();
-void drawBillboard();
-
-// texture mapping
-bool LoadGLTextures(char* fname);
-=======
->>>>>>> parent of 4305b55... billboard
 
 #endif
