@@ -63,6 +63,7 @@ void keyboard(unsigned char key, int x, int y);
 // robots
 void drawGenie();
 void drawEverythingWithShadow();
+void drawMagicBall();
 
 // billboard
 void billboardBegin();

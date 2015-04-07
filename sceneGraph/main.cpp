@@ -13,8 +13,8 @@ double AVATAR_POS_X = 0.0;
 double AVATAR_POS_Y = 0.0;
 double AVATAR_POS_Z = 0.0;
 
-double phi = M_PI/2 + EPSLON;    // camera view: up and down
-double beta = 0;            // camera view: left to right
+double phi = M_PI/2.1 + EPSLON;     // camera view: up and down
+double beta = 0;                    // camera view: left to right
 
 double head_theta = 0.0;    // how much the robot nods
 double head_beta = 0.0;     // how much the robot looks left and right
@@ -68,6 +68,7 @@ int main(int argc, char **argv)
     
     // loop until something happens
     glutMainLoop();
+    
     return 0;
 }
 
@@ -109,11 +110,22 @@ void init()
     // initialize stencil clear value
     glClearStencil(0.0);
     
-    // texture mapping: billboard
-    LoadGLTextures("/Users/owlroro/Desktop/opengl/sceneGraph/tajMahal.png");
+    // texture mapping: magic ball
+    LoadGLTextures("/Users/maureennaval/Desktop/opengl/sceneGraph/magicBall-01.png");
+    
+//    // texture mapping: billboard
+//    LoadGLTextures("/Users/maureennaval/Desktop/opengl/sceneGraph/tajMahal.png");
     
     // initialize stencil clear value
     glClearStencil(0.0);
+    
+    // fog
+    glEnable(GL_FOG);
+    glFogi(GL_FOG_MODE, GL_EXP);
+    GLfloat fogColor[4]= {1, 0.7, 0.7, 1.0};
+    glFogfv(GL_FOG_COLOR, fogColor);
+    glFogf(GL_FOG_DENSITY, 0.01);
+    glHint(GL_FOG_HINT, GL_DONT_CARE);
 }
 
 
@@ -208,9 +220,11 @@ void drawEverythingWithShadow() {
     // disable buffers
     glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
     glDisable(GL_DEPTH_TEST);
+    // enable stencil test
     glEnable(GL_STENCIL_TEST);
     glStencilFunc(GL_EQUAL,0,3);
     glStencilOp(GL_KEEP, GL_KEEP, GL_INCR);
+    // enable face cull
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
     
@@ -223,11 +237,13 @@ void drawEverythingWithShadow() {
     
     // enable buffers
     glEnable(GL_DEPTH_TEST);
+    // disable stencil test
     glDisable(GL_STENCIL_TEST);
     glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+    // disable face cull
     glDisable(GL_CULL_FACE);
     
-    // disable buffers
+    // enable stencil test: shadow
     glEnable(GL_STENCIL_TEST);
     glStencilFunc(GL_EQUAL, 1, 3);
     glStencilOp(GL_KEEP,GL_KEEP,GL_KEEP);
@@ -243,29 +259,33 @@ void drawEverythingWithShadow() {
     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, black);
     drawGenie();
     glPopMatrix();
-    //enable buffers
+    // disable stencil test: shadow
     glDisable(GL_STENCIL_TEST);
     
     drawGenie();
     
     glDisable(GL_POLYGON_OFFSET_FILL);
     
-    
     // draw floor
     glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, floorDiffuse);
     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, floorDiffuse);
     drawFloor();
-
+    
+    // draw magic ball
+    drawMagicBall();
 }
+
 void _drawFloor(void)
 {
+    glPushMatrix();
     glNormal3f(0,1,0);
-    glBegin(GL_QUADS);
-    glVertex3f(-5,0,-5);
-    glVertex3f(-5,0,5);
-    glVertex3f(5,0,5);
-    glVertex3f(5,0,-5);
-    glEnd();
+        glBegin(GL_QUADS);
+        glVertex3f(-5,0,-5);
+        glVertex3f(-5,0,5);
+        glVertex3f(5,0,5);
+        glVertex3f(5,0,-5);
+        glEnd();
+    glPopMatrix();
 }
 
 void billboardBegin() {
@@ -277,7 +297,7 @@ void billboardBegin() {
         glPushMatrix();
     
         // get the current modelview matrix
-    glGetFloatv(GL_MODELVIEW_MATRIX , modelview);
+        glGetFloatv(GL_MODELVIEW_MATRIX , modelview);
     
         // undo all rotations
         // beware all scaling is lost as well
@@ -301,46 +321,60 @@ void billboardEnd() {
 }
 
 void drawBillboard() {
-        billboardBegin();
+    billboardBegin();
+
+//    // make transparent by setting parts of image to background color
+//    glColor4f(0.44,0.24,0.37,1);
     
-        glPushMatrix();
-    glColor4f(0.44,0.24,0.37,0);
     glTranslatef(0, 0, -5);
-            glBegin(GL_QUADS);
-            // bottom left corner
-            glTexCoord2f(0, 0);
-            glVertex3f(-6, 0, -5);
+        glBegin(GL_QUADS);
+        // bottom left corner
+        glTexCoord2f(0, 0);
+        glVertex3f(-10, 0, -5);
         // top left corner
-            glTexCoord2f(0, 1);
-            glVertex3f(-6, 5, -5);
+        glTexCoord2f(0, 1);
+        glVertex3f(-10, 10, -5);
         // top right corner
-            glTexCoord2f(1, 1);
-            glVertex3f(6, 5, -5);
-            // bottom right corner
-            glTexCoord2f(1, 0);
-            glVertex3f(6, 0, -5);
-            glEnd();
-        glTranslatef(0, 0, 5);
-        glPopMatrix();
+        glTexCoord2f(1, 1);
+        glVertex3f(10, 10, -5);
+        // bottom right corner
+        glTexCoord2f(1, 0);
+        glVertex3f(10, 0, -5);
+        glEnd();
+    glTranslatef(0, 0, 5);
     
-        billboardEnd();
+    billboardEnd();
 }
 
 bool LoadGLTextures(char* fname)
 {
-        int textureId = SOIL_load_OGL_texture(fname, SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
-        if(textureId == 0)
-                return false;
+    int textureId = SOIL_load_OGL_texture(fname, SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
+    if(textureId == 0)
+        return false;
     
-        // tell what texture to use
-        glBindTexture(GL_TEXTURE_2D, textureId);
+    // magic ball texture
+    // tell what texture to use
+    glBindTexture(GL_TEXTURE_2D, textureId);
     
-        // specify resampling method
-        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+    // specify resampling method
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
 
-        // how texture should be used
-        glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+    // how texture should be used
+    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
     
     return true;
+}
+
+void drawMagicBall()
+{
+    glPushMatrix();
+    glTranslatef(2, 0.5, 0);
+    glEnable(GL_TEXTURE_2D);
+        GLUquadric *quad = gluNewQuadric();
+        gluQuadricTexture(quad, GL_TRUE);   // add texture
+        gluSphere(quad, 0.5, 20, 20);
+    glDisable(GL_TEXTURE_2D);
+    glTranslatef(-2, -0.5, 0);
+    glPopMatrix();
 }
