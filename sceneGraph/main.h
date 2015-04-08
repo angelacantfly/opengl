@@ -54,6 +54,19 @@ extern bool HEADLAMPSTATUS;
 // toggle view
 extern bool robotPerspective;
 
+enum {
+    JUNCTION = 0,
+    CONTROL1_FOR_JUNCTION = 1,
+    CONTROL2_FOR_JUNCTION = 2,
+    OTHER=3
+};
+
+// cuuurve
+extern const int numCurves;              // Controls the number of curves
+extern const int numPoints;  // DO NOT CHANGE THIS
+extern int currPoint;
+extern int typeCurrPoint;
+
 void display(void);
 void reshape(int width, int height);
 void init();
@@ -63,15 +76,12 @@ void keyboard(unsigned char key, int x, int y);
 // robots
 void drawGenie();
 void drawEverythingWithShadow();
-void drawMagicBall();
-
-// billboard
-void billboardBegin();
-void billboardEnd();
-void drawBillboard();
-
 
 // texture mapping
 bool LoadGLTextures(char* fname);
+
+//
+void drawRollerCoaster();
+void drawCurve(int startPoint);
 
 #endif

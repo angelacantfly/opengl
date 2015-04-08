@@ -5,6 +5,7 @@
 #include "shadow.h"
 #include "SOIL.h"
 
+
 // global variables
 using namespace std;
 
@@ -33,11 +34,20 @@ GLfloat lightPosition[]={0,3,0,1};
 // toggle camera perspective
 bool robotPerspective = false;
 
+// cuuurve
+const int numCurves = 3;              // Controls the number of curves
+const int numPoints = 3*numCurves+1;  // DO NOT CHANGE THIS
+float points[numPoints][3];
+int currPoint=0;
+int typeCurrPoint = OTHER;
+
 // how much user controls camera
 double VIEW_RADIUS = 30;
 double CAMERA_Z = VIEW_RADIUS * sin(phi) * cos(beta); // zoom in and out
 double CAMERA_X = VIEW_RADIUS * sin(phi) * sin(beta); // left and right
 double CAMERA_Y = VIEW_RADIUS * cos(phi);             // up and down
+
+
 
 int main(int argc, char **argv)
 {
@@ -65,6 +75,11 @@ int main(int argc, char **argv)
     
     // initalize opengl parameters
     init();
+    
+    // initialize points
+    float spread=100;
+    for (int i=0; i< numPoints; i++)
+        points[i][0]=points[i][1]=points[i][2]=spread/2.0 - spread/(numPoints+1.0) *i;
     
     // loop until something happens
     glutMainLoop();
@@ -122,12 +137,12 @@ void init()
     glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
     
     // fog
-//    glEnable(GL_FOG);
-//    glFogi(GL_FOG_MODE, GL_EXP);
-//    GLfloat fogColor[4]= {1, 0.7, 0.7, 1.0};
-//    glFogfv(GL_FOG_COLOR, fogColor);
-//    glFogf(GL_FOG_DENSITY, 0.01);
-//    glHint(GL_FOG_HINT, GL_DONT_CARE);
+    glEnable(GL_FOG);
+    glFogi(GL_FOG_MODE, GL_EXP);
+    GLfloat fogColor[4]= {1, 0.7, 0.7, 1.0};
+    glFogfv(GL_FOG_COLOR, fogColor);
+    glFogf(GL_FOG_DENSITY, 0.01);
+    glHint(GL_FOG_HINT, GL_DONT_CARE);
 }
 
 
@@ -180,24 +195,14 @@ void display()
         drawBillboard();
     glDisable(GL_TEXTURE_2D);
     
+//    drawRollerCoaster();
+    
     glutSwapBuffers();
 }
 
 
 
-void drawGenie() {
-    // regular view
-    if (!robotPerspective) {
-        // draw genie's body parts
-        glTranslatef(AVATAR_POS_X,0,AVATAR_POS_Z);
-        drawGenieTeapot();
-        drawGenieBottom();
-        drawGenieMiddle();
-        drawHead();
-        glTranslatef(-AVATAR_POS_X,0,-AVATAR_POS_Z);
-        drawSpotLight();
-    }
-}
+
 
 void drawEverythingWithShadow() {
     glEnable(GL_POLYGON_OFFSET_FILL);
@@ -262,63 +267,6 @@ void drawEverythingWithShadow() {
 }
 
 
-void billboardBegin() {
-    
-        float modelview[16];
-        int i,j;
-    
-        // save the current modelview matrix
-        glPushMatrix();
-    
-        // get the current modelview matrix
-        glGetFloatv(GL_MODELVIEW_MATRIX , modelview);
-    
-        // undo all rotations
-        // beware all scaling is lost as well
-        for( i=0; i<3; i++ )
-                for( j=0; j<3; j++ ) {
-                        if ( i==j )
-                                modelview[i*4+j] = 1.0;
-                        else
-                                modelview[i*4+j] = 0.0;
-                    }
-    
-        // set the modelview with no rotations
-        glLoadMatrixf(modelview);
-}
-
-void billboardEnd() {
-    
-        // restore the previously
-        // stored modelview matrix
-        glPopMatrix();
-}
-
-void drawBillboard() {
-    billboardBegin();
-
-//    // make transparent by setting parts of image to background color
-//    glColor4f(0.44,0.24,0.37,1);
-    
-    glTranslatef(0, 0, -5);
-        glBegin(GL_QUADS);
-        // bottom left corner
-        glTexCoord2f(0, 0);
-        glVertex3f(-10, 0, -5);
-        // top left corner
-        glTexCoord2f(0, 1);
-        glVertex3f(-10, 10, -5);
-        // top right corner
-        glTexCoord2f(1, 1);
-        glVertex3f(10, 10, -5);
-        // bottom right corner
-        glTexCoord2f(1, 0);
-        glVertex3f(10, 0, -5);
-        glEnd();
-    glTranslatef(0, 0, 5);
-    
-    billboardEnd();
-}
 
 bool LoadGLTextures(char* fname)
 {
@@ -340,15 +288,106 @@ bool LoadGLTextures(char* fname)
     return true;
 }
 
-void drawMagicBall()
-{
+void drawRollerCoaster(){
+    // we'll draw axis lines centered at (0,0,0)
+    double center[3]={0,0,0};
+    
     glPushMatrix();
-    glTranslatef(2, 0.5, 0);
-    glEnable(GL_TEXTURE_2D);
-        GLUquadric *quad = gluNewQuadric();
-        gluQuadricTexture(quad, GL_TRUE);   // add texture
-        gluSphere(quad, 0.5, 20, 20);
-    glDisable(GL_TEXTURE_2D);
-    glTranslatef(-2, -0.5, 0);
+    
+    //    glTranslatef(0,-50,0);
+    
+    // clear buffers
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    
+    //  now draw axis in x,y,z directions from center
+    //    glColor3f(1.0f, 1.0f, 1.0f);
+    //    glBegin(GL_LINES);
+    //    glVertex3f(center[0],center[1],center[2]);
+    //    glVertex3f(center[0]+100,center[1],center[2]);
+    //    glEnd();
+    //    glBegin(GL_LINES);
+    //    glVertex3f(center[0],center[1],center[2]);
+    //    glVertex3f(center[0],center[1]+100,center[2]);
+    //    glEnd();
+    //    glBegin(GL_LINES);
+    //    glVertex3f(center[0],center[1],center[2]);
+    //    glVertex3f(center[0],center[1],center[2]+100);
+    //    glEnd();
+    
+    
+    //    glTranslatef(0,0,-20);
+    
+    // draw points
+    glPointSize(3);
+    glBegin(GL_POINTS);
+    for (int i=0;i<numPoints;i++) {
+        if (i%3==0) {
+            glColor3f(1,0,1);
+        }
+        else {
+            glColor3f(1,1,0);
+        }
+        glVertex3f(points[i][0],points[i][1],points[i][2]);
+    }
+    glEnd();
+    glColor3f(1,1,1);
+    glPointSize(5);
+    glBegin(GL_POINTS);
+    glVertex3f(points[currPoint][0],points[currPoint][1],points[currPoint][2]);
+    glEnd();
+    
+    
+    glColor3f(0,0,1);
+    for (int i=0; i<numCurves; i++)
+    {
+        drawCurve(3*i);
+    }
+    // restore to camera view
     glPopMatrix();
+}
+
+/*  draw a bezier spline based on control points[startPoint],
+ /*  points[startPoint+1], and points[startPoint+2], points[startPoint+3] */
+void drawCurve(int startPoint) {
+    if (startPoint<0 || startPoint+2>=numPoints)
+        return;
+    
+    float coeff[3][4];
+    float basisMatrix[4][4] = {
+        {-1,  3, -3, 1},
+        { 3, -6,  3, 0},
+        {-3,  3,  0, 0},
+        { 1,  0,  0, 0}};
+    /*  compute coefficients for the x,y, and z cubic polynomials */
+    for (int d=0; d<3; d++) { // compute for dimension x, y, and z
+        for (int i=0; i< 4; i++) { // compute coeff[d][i]
+            coeff[d][i]=0;
+            for (int j=0;j<4;j++) {
+                coeff[d][i] += basisMatrix[i][j] * points[j+startPoint][d];
+            }
+        }
+    }
+    
+    /*  approximate the curve by a line strip through sample points	*/
+    glBegin(GL_LINE_STRIP);
+    float numSamples=10;
+    float val[3];
+    float t=0;
+    while(t<1) {
+        /* TODO: compute X(t), Y(t), and Z(T) and create openGL vertex */
+        float polyVal[3];
+        for (int i=0;i<3;i++) {
+            polyVal[i] = coeff[i][0]*t*t*t + coeff[i][1]*t*t + coeff[i][2]*t + coeff[i][3];
+            
+        }
+        glVertex3f(polyVal[0], polyVal[1], polyVal[2]);
+        t += 1.0/numSamples;
+        
+    }
+    /* the curve ends at a control point when t=1  				*/
+    /* because the increment 1.0/numSamples  has finite precision	*/
+    /* t probably won't hit 1.0 exactly, so we force it			*/
+    
+    glVertex3f(points[startPoint+3][0],points[startPoint+3][1],points[startPoint+3][2]);
+    glEnd();
 }

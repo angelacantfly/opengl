@@ -312,3 +312,89 @@ void drawSpotLight()
     glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, direction);
     
 }
+
+void drawMagicBall()
+{
+    glPushMatrix();
+    glTranslatef(2, 0.5, 0);
+    glEnable(GL_TEXTURE_2D);
+    GLUquadric *quad = gluNewQuadric();
+    gluQuadricTexture(quad, GL_TRUE);   // add texture
+    gluSphere(quad, 0.5, 20, 20);
+    glDisable(GL_TEXTURE_2D);
+    glTranslatef(-2, -0.5, 0);
+    glPopMatrix();
+}
+
+
+void billboardBegin() {
+    
+    float modelview[16];
+    int i,j;
+    
+    // save the current modelview matrix
+    glPushMatrix();
+    
+    // get the current modelview matrix
+    glGetFloatv(GL_MODELVIEW_MATRIX , modelview);
+    
+    // undo all rotations
+    // beware all scaling is lost as well
+    for( i=0; i<3; i++ )
+        for( j=0; j<3; j++ ) {
+            if ( i==j )
+                modelview[i*4+j] = 1.0;
+            else
+                modelview[i*4+j] = 0.0;
+        }
+    
+    // set the modelview with no rotations
+    glLoadMatrixf(modelview);
+}
+
+void billboardEnd() {
+    
+    // restore the previously
+    // stored modelview matrix
+    glPopMatrix();
+}
+
+void drawBillboard() {
+    billboardBegin();
+    
+    //    // make transparent by setting parts of image to background color
+    //    glColor4f(0.44,0.24,0.37,1);
+    
+    glTranslatef(0, 0, -5);
+    glBegin(GL_QUADS);
+    // bottom left corner
+    glTexCoord2f(0, 0);
+    glVertex3f(-10, 0, -5);
+    // top left corner
+    glTexCoord2f(0, 1);
+    glVertex3f(-10, 10, -5);
+    // top right corner
+    glTexCoord2f(1, 1);
+    glVertex3f(10, 10, -5);
+    // bottom right corner
+    glTexCoord2f(1, 0);
+    glVertex3f(10, 0, -5);
+    glEnd();
+    glTranslatef(0, 0, 5);
+    
+    billboardEnd();
+}
+
+void drawGenie() {
+    // regular view
+    if (!robotPerspective) {
+        // draw genie's body parts
+        glTranslatef(AVATAR_POS_X,0,AVATAR_POS_Z);
+        drawGenieTeapot();
+        drawGenieBottom();
+        drawGenieMiddle();
+        drawHead();
+        glTranslatef(-AVATAR_POS_X,0,-AVATAR_POS_Z);
+        drawSpotLight();
+    }
+}

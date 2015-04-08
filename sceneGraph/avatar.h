@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include "main.h"
 
+void drawGenie();
 void drawArm(bool x);
 void drawHead();
 void drawEye(bool x);
@@ -25,4 +26,11 @@ void drawGenieMiddle();
 void drawGenieBottom();
 void drawGenieTeapot();
 void drawSpotLight();
+void drawMagicBall();
+
+// billboard
+void billboardBegin();
+void billboardEnd();
+void drawBillboard();
+
 #endif /* defined(__sceneGraph__avatar__) */
