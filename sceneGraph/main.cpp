@@ -26,7 +26,7 @@ double WAVE_UP_DOWN = 0;    // how much robot moves arms (up and down)
 
 // toggle lighting
 bool AMBIENT = false;
-bool POINTLIGHT = false;
+bool POINTLIGHT = true;
 bool HEADLAMPSTATUS = false;
 GLfloat lightPosition[]={0,3,0,1};
 
@@ -79,12 +79,12 @@ void init()
     glLoadIdentity();
     gluPerspective(20.0, 1.0, 1, 100.0);
     glMatrixMode(GL_MODELVIEW);
-//    glLoadIdentity();
+    glLoadIdentity();
     
     // initialize background color to purple
     glClearColor(0.44,0.24,0.37,0);
-    // initialize shade model to smooth
-    glShadeModel(GL_SMOOTH);
+//    // initialize shade model to smooth
+//    glShadeModel(GL_SMOOTH);
     
     // enable light0 and lighting
     glEnable(GL_LIGHTING);
@@ -111,21 +111,23 @@ void init()
     glClearStencil(0.0);
     
     // texture mapping: magic ball
-    LoadGLTextures("/Users/maureennaval/Desktop/opengl/sceneGraph/magicBall-01.png");
+    LoadGLTextures("/Users/owlroro/Desktop/opengl/sceneGraph/magicBall-01.png");
     
 //    // texture mapping: billboard
 //    LoadGLTextures("/Users/maureennaval/Desktop/opengl/sceneGraph/tajMahal.png");
     
     // initialize stencil clear value
     glClearStencil(0.0);
+    // set polygon mode
+    glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
     
     // fog
-    glEnable(GL_FOG);
-    glFogi(GL_FOG_MODE, GL_EXP);
-    GLfloat fogColor[4]= {1, 0.7, 0.7, 1.0};
-    glFogfv(GL_FOG_COLOR, fogColor);
-    glFogf(GL_FOG_DENSITY, 0.01);
-    glHint(GL_FOG_HINT, GL_DONT_CARE);
+//    glEnable(GL_FOG);
+//    glFogi(GL_FOG_MODE, GL_EXP);
+//    GLfloat fogColor[4]= {1, 0.7, 0.7, 1.0};
+//    glFogfv(GL_FOG_COLOR, fogColor);
+//    glFogf(GL_FOG_DENSITY, 0.01);
+//    glHint(GL_FOG_HINT, GL_DONT_CARE);
 }
 
 
@@ -144,14 +146,11 @@ void display()
     GLenum errCode;
     if ((errCode = glGetError()) != GL_NO_ERROR)
         cout << gluErrorString(errCode) << endl;
-    glPopMatrix();
-    
-    // clear buffers
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
     // initialize modelview matrix
-    glMatrixMode(GL_MODELVIEW_MATRIX);
+    glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+    
     
     // regular camera view
     if (!robotPerspective) {
@@ -164,19 +163,6 @@ void display()
         GLfloat headLampZ = AVATAR_POS_Z  + 0.7 * sin((head_theta+ angle)/180 * M_PI)* cos(head_beta/180 * M_PI) ;
         gluLookAt(headLampX, headLampY + 2, headLampZ, headLampX , 0, headLampZ + 3, 0, 1,0);
     }
-    glPushMatrix();
-
-    if (HEADLAMPSTATUS) glEnable(GL_LIGHT1);
-    else glDisable(GL_LIGHT1);
-    
-    if (AMBIENT) {
-        GLfloat ambientWhite[] = {0.2,0.2,0.2,0.2};
-        glLightfv(GL_LIGHTING, GL_AMBIENT, ambientWhite);
-    }
-    else {
-        GLfloat noambient[] = {0,0,0,0};
-        glLightfv(GL_LIGHTING, GL_AMBIENT, noambient);
-    }
     
     // SET POINT LIGHT POSITION
     glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
@@ -185,15 +171,15 @@ void display()
     
     // clear buffers
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-    
-    drawEverythingWithShadow();
+    glPushMatrix();
+        drawEverythingWithShadow();
+    glPopMatrix();
     
     // billboard
     glEnable(GL_TEXTURE_2D);
         drawBillboard();
     glDisable(GL_TEXTURE_2D);
     
-    glPopMatrix();
     glutSwapBuffers();
 }
 
@@ -275,18 +261,6 @@ void drawEverythingWithShadow() {
     drawMagicBall();
 }
 
-void _drawFloor(void)
-{
-    glPushMatrix();
-    glNormal3f(0,1,0);
-        glBegin(GL_QUADS);
-        glVertex3f(-5,0,-5);
-        glVertex3f(-5,0,5);
-        glVertex3f(5,0,5);
-        glVertex3f(5,0,-5);
-        glEnd();
-    glPopMatrix();
-}
 
 void billboardBegin() {
     

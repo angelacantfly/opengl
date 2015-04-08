@@ -70,6 +70,8 @@ void menu(int item)
         {
             HEADLAMPSTATUS = !HEADLAMPSTATUS;
             cout << "Toggle head light: " << (HEADLAMPSTATUS?"ON":"OFF") << endl;
+            if (HEADLAMPSTATUS) glEnable(GL_LIGHT1);
+            else glDisable(GL_LIGHT1);
             glutPostRedisplay();
             break;
         }

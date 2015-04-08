@@ -70,6 +70,7 @@ void billboardBegin();
 void billboardEnd();
 void drawBillboard();
 
+
 // texture mapping
 bool LoadGLTextures(char* fname);
 
