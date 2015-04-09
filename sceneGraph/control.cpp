@@ -160,16 +160,16 @@ void special(int key, int x, int y)
             AVATAR_POS_X--;
             
             // do not go past left edge of floor
-            if (AVATAR_POS_X <= -9)
-                AVATAR_POS_X = -9;
+            if (AVATAR_POS_X <= -7)
+                AVATAR_POS_X = -7;
             
             break;
         case GLUT_KEY_RIGHT:
             AVATAR_POS_X++;
             
             // do not go past right edge of floor
-            if (AVATAR_POS_X >= 9)
-                AVATAR_POS_X = 9;
+            if (AVATAR_POS_X >= 7)
+                AVATAR_POS_X = 7;
             
             break;
         case GLUT_KEY_DOWN:

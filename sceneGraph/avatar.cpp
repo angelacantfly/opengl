@@ -355,30 +355,28 @@ void drawBillboard() {
 
 void drawMirror()
 {
-    billboardBegin();
-    
     // blend for reflection
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
+    glPushMatrix();
     glColor4f(1, 1, 1, 0.5);
     glTranslatef(0, 5, 2);
     glScalef(1, -1, 1);
         glBegin(GL_QUADS);
         // bottom left corner
-        glVertex3f(-5, 0, -5);
+        glVertex3f(-10, 0, -5);
         // top left corner
-        glVertex3f(-5, 5, -5);
+        glVertex3f(-10, 5, -5);
         // top right corner
-        glVertex3f(5, 5, -5);
+        glVertex3f(10, 5, -5);
         // bottom right corner
-        glVertex3f(5, 0, -5);
+        glVertex3f(10, 0, -5);
         glEnd();
+    glPopMatrix();
     
     // disable reflection
     glDisable(GL_BLEND);
-    
-    billboardEnd();
 }
 
 void drawGenie() {
@@ -387,8 +385,6 @@ void drawGenie() {
     if (!robotPerspective) {
         glPushMatrix();
         glTranslatef(AVATAR_POS_X,0,AVATAR_POS_Z);
-        cout << "Avatar x position: " << AVATAR_POS_X << endl;
-        cout << "Avatar z position: " << AVATAR_POS_Z << endl;
         drawGenieTeapot();
         drawGenieBottom();
         drawGenieMiddle();
