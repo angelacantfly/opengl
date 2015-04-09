@@ -21,7 +21,7 @@ void drawFloor();
 void drawSnowmanTeapot(GLfloat radius);
 void tileFloor(double x1, double y1, double x2, double y2, double r, double g, double b);
 void drawHat(GLfloat radius);
-void drawHeadLamp();
+//void drawHeadLamp();
 void drawGenieMiddle();
 void drawGenieBottom();
 void drawGenieTeapot();

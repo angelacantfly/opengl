@@ -61,9 +61,9 @@ enum {
     OTHER=3
 };
 
-// cuuurve
-extern const int numCurves;              // Controls the number of curves
-extern const int numPoints;  // DO NOT CHANGE THIS
+// curve
+extern const int numCurves;
+extern const int numPoints;
 extern int currPoint;
 extern int typeCurrPoint;
 
@@ -80,8 +80,11 @@ void drawEverythingWithShadow();
 // texture mapping
 bool LoadGLTextures(char* fname);
 
-//
+// roller coaster
 void drawRollerCoaster();
 void drawCurve(int startPoint);
+
+// fog
+void drawFog();
 
 #endif

@@ -5,7 +5,6 @@
 #include "shadow.h"
 #include "SOIL.h"
 
-
 // global variables
 using namespace std;
 
@@ -20,7 +19,6 @@ double beta = 0;                    // camera view: left to right
 double head_theta = 0.0;    // how much the robot nods
 double head_beta = 0.0;     // how much the robot looks left and right
 
-
 double HEADLAMPHEIGHT = 0;  // position of head lamp
 double WAVE_SWIM = 0;       // how much robot moves arms (front to back)
 double WAVE_UP_DOWN = 0;    // how much robot moves arms (up and down)
@@ -34,7 +32,7 @@ GLfloat lightPosition[]={0,3,0,1};
 // toggle camera perspective
 bool robotPerspective = false;
 
-// cuuurve
+// curve
 const int numCurves = 3;              // Controls the number of curves
 const int numPoints = 3*numCurves+1;  // DO NOT CHANGE THIS
 float points[numPoints][3];
@@ -46,8 +44,6 @@ double VIEW_RADIUS = 30;
 double CAMERA_Z = VIEW_RADIUS * sin(phi) * cos(beta); // zoom in and out
 double CAMERA_X = VIEW_RADIUS * sin(phi) * sin(beta); // left and right
 double CAMERA_Y = VIEW_RADIUS * cos(phi);             // up and down
-
-
 
 int main(int argc, char **argv)
 {
@@ -98,24 +94,23 @@ void init()
     
     // initialize background color to purple
     glClearColor(0.44,0.24,0.37,0);
-//    // initialize shade model to smooth
-//    glShadeModel(GL_SMOOTH);
+    // initialize shade model to smooth
+    glShadeModel(GL_SMOOTH);
     
-    // enable light0 and lighting
+    // enable lighting
     glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);    // start with the point light on
 
     glEnable(GL_COLOR_MATERIAL);
     
     // set color of point light
-    GLfloat white[] = {1,1,1,0};		      // light color
+    GLfloat white[] = {1,1,1,1};		      // light color
     glLightfv(GL_LIGHT0, GL_DIFFUSE, white);   // set diffuse light color
     glLightfv(GL_LIGHT0, GL_SPECULAR, white);  // set specular light color
     
-    // set color of headlamp
-    GLfloat red[] = {1,0,0,0};		      // light color
-    GLfloat light_ambient[] = { 0.2, 0.2, 0.2, 0.2}; // ambient
+    // set properties of headlamp
     GLfloat direction[] = {0, -1.0, 1.0};
-    glLightfv(GL_LIGHT1, GL_DIFFUSE, red);   // set diffuse light color
+    glLightfv(GL_LIGHT1, GL_DIFFUSE, white);   // set diffuse light color
     glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, direction);
     glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, 45.0);
     glLightf(GL_LIGHT1, GL_SPOT_EXPONENT, 5.0);
@@ -125,24 +120,13 @@ void init()
     // initialize stencil clear value
     glClearStencil(0.0);
     
-    // texture mapping: magic ball
-    LoadGLTextures("/Users/owlroro/Desktop/opengl/sceneGraph/magicBall-01.png");
-    
-//    // texture mapping: billboard
-//    LoadGLTextures("/Users/maureennaval/Desktop/opengl/sceneGraph/tajMahal.png");
-    
-    // initialize stencil clear value
-    glClearStencil(0.0);
     // set polygon mode
     glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
     
-    // fog
-    glEnable(GL_FOG);
-    glFogi(GL_FOG_MODE, GL_EXP);
-    GLfloat fogColor[4]= {1, 0.7, 0.7, 1.0};
-    glFogfv(GL_FOG_COLOR, fogColor);
-    glFogf(GL_FOG_DENSITY, 0.01);
-    glHint(GL_FOG_HINT, GL_DONT_CARE);
+    // texture mapping: magic ball
+    LoadGLTextures("/Users/maureennaval/Desktop/opengl/sceneGraph/magicBall-01.png");
+    
+    drawFog();
 }
 
 
@@ -166,107 +150,142 @@ void display()
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     
-    
     // regular camera view
     if (!robotPerspective) {
         gluLookAt(CAMERA_X, CAMERA_Y, CAMERA_Z, 0, 0, 0, 0, 1, 0);
+    // view world from the robot's perspective
     } else {
         GLfloat angle = atan2f(0.25, 0.5) *180/M_PI;
         GLfloat length = 0.6;
+        
         GLfloat headLampX = AVATAR_POS_X + length *sin(head_beta/180*M_PI);
         GLfloat headLampY = 1.9 * 1.0 + length* cos((head_theta + angle)/180 * M_PI);
         GLfloat headLampZ = AVATAR_POS_Z  + 0.7 * sin((head_theta+ angle)/180 * M_PI)* cos(head_beta/180 * M_PI) ;
+        
         gluLookAt(headLampX, headLampY + 2, headLampZ, headLampX , 0, headLampZ + 3, 0, 1,0);
     }
     
-    // SET POINT LIGHT POSITION
-    glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
-    if (POINTLIGHT) glEnable(GL_LIGHT0);
-    else glDisable(GL_LIGHT0);
-    
     // clear buffers
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-    glPushMatrix();
-        drawEverythingWithShadow();
-    glPopMatrix();
     
-    // billboard
+    // set point light position
+    glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
+    
+    // draw scene: robot (including teapot) and magic ball
+    drawEverythingWithShadow();
+    drawSpotLight();
+    
+    // billboard: galaxy
     glEnable(GL_TEXTURE_2D);
         drawBillboard();
     glDisable(GL_TEXTURE_2D);
     
-//    drawRollerCoaster();
+    // reflect scene
+    // enable stencil test
+    glStencilFunc(GL_EQUAL,1,3);
+    glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+    glPushMatrix();
+        glScalef(1,-1,1);
+        drawEverythingWithShadow();
+    glPopMatrix();
+    // disable stencil test
+    glDisable(GL_STENCIL_TEST);
+
+    // roller coaster
+    drawRollerCoaster();
+    
+    // floor
+    drawFloor();
     
     glutSwapBuffers();
 }
 
-
-
-
-
 void drawEverythingWithShadow() {
-    glEnable(GL_POLYGON_OFFSET_FILL);
-    glPolygonOffset(-1,-1);
+//    glEnable(GL_POLYGON_OFFSET_FILL);
+//    glPolygonOffset(-1,-1);
+//    
+//    // disable buffers
+//    glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+//    glDisable(GL_DEPTH_TEST);
+//    // enable stencil test
+//    glEnable(GL_STENCIL_TEST);
+//    glStencilFunc(GL_EQUAL,0,3);
+//    glStencilOp(GL_KEEP, GL_KEEP, GL_INCR);
+//    // enable face cull
+//    glEnable(GL_CULL_FACE);
+//    glCullFace(GL_BACK);
+//    
+//    // draw floor
+//    float floorDiffuse[]={1.0,0.0,0.5};
+//    float floorAmbient[]={1.0,0.0,0.5};
+//    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, floorDiffuse);
+//    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, floorDiffuse);
+//    drawFloor();
+//    
+//    // enable buffers
+//    glEnable(GL_DEPTH_TEST);
+//    // disable stencil test
+//    glDisable(GL_STENCIL_TEST);
+//    glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+//    // disable face cull
+//    glDisable(GL_CULL_FACE);
+//    
+//    // enable stencil test: shadow
+//    glEnable(GL_STENCIL_TEST);
+//    glStencilFunc(GL_EQUAL, 1, 3);
+//    glStencilOp(GL_KEEP,GL_KEEP,GL_KEEP);
+//    
+//    // shadow
+//    GLfloat shadowMat[16];
+//    GLfloat groundplane[4]={0,1,0,0};
+//    shadowMatrixPointLight(shadowMat, groundplane, lightPosition);
+//    glPushMatrix();
+//    glMultMatrixf(shadowMat);
+//    GLfloat black[4]={0,0,0,0};
+//    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, black);
+//    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, black);
+//    drawGenie();
+//    glPopMatrix();
+//    
+//    // disable stencil test: shadow
+//    glDisable(GL_STENCIL_TEST);
+//    
+//    drawGenie();
+//    
+//    glDisable(GL_POLYGON_OFFSET_FILL);
+//    
+//    // draw floor
+//    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, floorDiffuse);
+//    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, floorAmbient);
+//
+//    drawFloor();
+//
+//    
+//    // draw magic ball
+//    drawMagicBall();
     
-    // disable buffers
-    glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
-    glDisable(GL_DEPTH_TEST);
-    // enable stencil test
-    glEnable(GL_STENCIL_TEST);
-    glStencilFunc(GL_EQUAL,0,3);
-    glStencilOp(GL_KEEP, GL_KEEP, GL_INCR);
-    // enable face cull
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_BACK);
+    drawGenie();
+    drawMagicBall();
     
-    // draw floor
+    // floor (reflection)
     float floorDiffuse[]={1.0,0.0,0.0};
     float floorAmbient[]={1.0,0.0,0.0};
     glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, floorDiffuse);
-    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, floorDiffuse);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, floorAmbient);
+    // disable buffers
+    glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+    glDisable(GL_DEPTH_TEST);
+    // enable stencil buffer: floor
+    glEnable(GL_STENCIL_TEST);
+    glStencilFunc(GL_EQUAL,0,3);
+    glStencilOp(GL_KEEP, GL_KEEP, GL_INCR);
     drawFloor();
-    
     // enable buffers
     glEnable(GL_DEPTH_TEST);
+    glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
     // disable stencil test
     glDisable(GL_STENCIL_TEST);
-    glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-    // disable face cull
-    glDisable(GL_CULL_FACE);
-    
-    // enable stencil test: shadow
-    glEnable(GL_STENCIL_TEST);
-    glStencilFunc(GL_EQUAL, 1, 3);
-    glStencilOp(GL_KEEP,GL_KEEP,GL_KEEP);
-    
-    // shadow
-    GLfloat shadowMat[16];
-    GLfloat groundplane[4]={0,1,0,0};
-    shadowMatrixPointLight(shadowMat, groundplane, lightPosition);
-    glPushMatrix();
-    glMultMatrixf(shadowMat);
-    GLfloat black[4]={0,0,0,0};
-    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, black);
-    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, black);
-    drawGenie();
-    glPopMatrix();
-    // disable stencil test: shadow
-    glDisable(GL_STENCIL_TEST);
-    
-    drawGenie();
-    
-    glDisable(GL_POLYGON_OFFSET_FILL);
-    
-    // draw floor
-    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, floorDiffuse);
-    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, floorDiffuse);
-    drawFloor();
-    
-    // draw magic ball
-    drawMagicBall();
 }
-
-
 
 bool LoadGLTextures(char* fname)
 {
@@ -274,7 +293,6 @@ bool LoadGLTextures(char* fname)
     if(textureId == 0)
         return false;
     
-    // magic ball texture
     // tell what texture to use
     glBindTexture(GL_TEXTURE_2D, textureId);
     
@@ -289,60 +307,31 @@ bool LoadGLTextures(char* fname)
 }
 
 void drawRollerCoaster(){
-    // we'll draw axis lines centered at (0,0,0)
-    double center[3]={0,0,0};
-    
     glPushMatrix();
     
-    //    glTranslatef(0,-50,0);
-    
-    // clear buffers
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    
-    //  now draw axis in x,y,z directions from center
-    //    glColor3f(1.0f, 1.0f, 1.0f);
-    //    glBegin(GL_LINES);
-    //    glVertex3f(center[0],center[1],center[2]);
-    //    glVertex3f(center[0]+100,center[1],center[2]);
-    //    glEnd();
-    //    glBegin(GL_LINES);
-    //    glVertex3f(center[0],center[1],center[2]);
-    //    glVertex3f(center[0],center[1]+100,center[2]);
-    //    glEnd();
-    //    glBegin(GL_LINES);
-    //    glVertex3f(center[0],center[1],center[2]);
-    //    glVertex3f(center[0],center[1],center[2]+100);
-    //    glEnd();
-    
-    
-    //    glTranslatef(0,0,-20);
-    
     // draw points
-    glPointSize(3);
-    glBegin(GL_POINTS);
-    for (int i=0;i<numPoints;i++) {
-        if (i%3==0) {
-            glColor3f(1,0,1);
-        }
-        else {
-            glColor3f(1,1,0);
-        }
-        glVertex3f(points[i][0],points[i][1],points[i][2]);
-    }
-    glEnd();
-    glColor3f(1,1,1);
     glPointSize(5);
     glBegin(GL_POINTS);
-    glVertex3f(points[currPoint][0],points[currPoint][1],points[currPoint][2]);
+    for (int i=0;i<numPoints;i++) {
+        // alternate between 2 colors depending on number of points
+        if (i%3==0) {
+            glColor3f(1,0,1);   // purple
+        }
+        else
+        {
+            glColor3f(1,1,0);   // yellow
+        }
+        glVertex3f(points[i][0],points[i][1],points[i][2]); // point on x,y,z
+    }
     glEnd();
     
-    
+    // draw blue curve
     glColor3f(0,0,1);
     for (int i=0; i<numCurves; i++)
     {
         drawCurve(3*i);
     }
-    // restore to camera view
+
     glPopMatrix();
 }
 
@@ -390,4 +379,14 @@ void drawCurve(int startPoint) {
     
     glVertex3f(points[startPoint+3][0],points[startPoint+3][1],points[startPoint+3][2]);
     glEnd();
+}
+
+void drawFog()
+{
+    glEnable(GL_FOG);
+    glFogi(GL_FOG_MODE, GL_EXP);
+    GLfloat fogColor[4]= {1, 0.7, 0.7, 1.0};
+    glFogfv(GL_FOG_COLOR, fogColor);
+    glFogf(GL_FOG_DENSITY, 0.01);
+    glHint(GL_FOG_HINT, GL_DONT_CARE);
 }
