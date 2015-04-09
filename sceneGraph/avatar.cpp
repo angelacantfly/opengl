@@ -353,6 +353,33 @@ void drawBillboard() {
     billboardEnd();
 }
 
+void drawMirror()
+{
+    // blend for reflection
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    
+    glColor4f(1, 1, 1, 0.5);
+    glPushMatrix();
+    glTranslatef(2, 5, 0);
+    glScalef(1, -1, 1);
+    glRotatef(90, 0, 1, 0);
+        glBegin(GL_QUADS);
+        // bottom left corner
+        glVertex3f(-5, 0, -5);
+        // top left corner
+        glVertex3f(-5, 5, -5);
+        // top right corner
+        glVertex3f(5, 5, -5);
+        // bottom right corner
+        glVertex3f(5, 0, -5);
+        glEnd();
+    glPopMatrix();
+    
+    // disable reflection
+    glDisable(GL_BLEND);
+}
+
 void drawGenie() {
     // draw genie's body parts + accessories
     // only when in regular view

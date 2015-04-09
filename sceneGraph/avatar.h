@@ -33,4 +33,7 @@ void billboardBegin();
 void billboardEnd();
 void drawBillboard();
 
+// mirror
+void drawMirror();
+
 #endif /* defined(__sceneGraph__avatar__) */

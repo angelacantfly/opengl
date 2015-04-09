@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "sceneGraph/main.cpp"
-            timestampString = "450253500.07042"
+            timestampString = "450294615.894303"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "352"
-            endingLineNumber = "352"
+            startingLineNumber = "387"
+            endingLineNumber = "387"
             landmarkName = "drawCurve(int startPoint)"
             landmarkType = "7">
          </BreakpointContent>

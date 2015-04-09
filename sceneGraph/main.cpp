@@ -175,12 +175,7 @@ void display()
     drawEverythingWithShadow();
     drawSpotLight();
     
-    // billboard: galaxy
-    glEnable(GL_TEXTURE_2D);
-        drawBillboard();
-    glDisable(GL_TEXTURE_2D);
-    
-    // reflect scene
+    // reflect scene: floor
     // enable stencil test
     glEnable(GL_STENCIL_TEST);
     glStencilFunc(GL_EQUAL,1,3);
@@ -191,12 +186,53 @@ void display()
     glPopMatrix();
     // disable stencil test
     glDisable(GL_STENCIL_TEST);
-
-    // roller coaster
-    drawRollerCoaster();
     
     // floor
     drawFloor();
+    
+    // mirror: tag
+    // disable buffers
+    glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+    glDisable(GL_DEPTH_TEST);
+    // enable stencil test
+    glEnable(GL_STENCIL_TEST);
+    glStencilFunc(GL_EQUAL,0,3);
+    glStencilOp(GL_KEEP, GL_KEEP, GL_INCR);
+    // enable face cull
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
+    // mirror
+    drawMirror();
+    // disable face cull
+    glDisable(GL_CULL_FACE);
+    // disable stencil test
+    glDisable(GL_STENCIL_TEST);
+    // re-enable buffers
+    glEnable(GL_DEPTH_TEST);
+    glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+    
+    // reflect scene: mirror
+    // enable stencil test
+    glStencilFunc(GL_EQUAL,1,3);
+    glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+    glPushMatrix();
+        glTranslatef(-5, 0, 0);
+        glScalef(-1,1,1);
+        drawEverythingWithShadow();
+    glPopMatrix();
+    // disable stencil test
+    glDisable(GL_STENCIL_TEST);
+    
+    // mirror
+    drawMirror();
+    
+    // billboard: galaxy
+    glEnable(GL_TEXTURE_2D);
+    drawBillboard();
+    glDisable(GL_TEXTURE_2D);
+
+    // roller coaster
+    drawRollerCoaster();
     
     glutSwapBuffers();
 }
@@ -254,11 +290,10 @@ void drawEverythingWithShadow() {
 //    
 //    glDisable(GL_POLYGON_OFFSET_FILL);
 
-    
     drawGenie();
     drawMagicBall();
     
-    // floor (reflection)
+    // floor: tag
     float floorDiffuse[]={1.0,0.0,0.0};
     float floorAmbient[]={1.0,0.0,0.0};
     glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, floorDiffuse);
@@ -276,11 +311,11 @@ void drawEverythingWithShadow() {
     drawFloor();
     // disable face cull
     glDisable(GL_CULL_FACE);
+    // disable stencil test
+    glDisable(GL_STENCIL_TEST);
     // enable buffers
     glEnable(GL_DEPTH_TEST);
     glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-    // disable stencil test
-    glDisable(GL_STENCIL_TEST);
 }
 
 bool LoadGLTextures(char* fname)
@@ -386,3 +421,4 @@ void drawFog()
     glFogf(GL_FOG_DENSITY, 0.01);
     glHint(GL_FOG_HINT, GL_DONT_CARE);
 }
+
