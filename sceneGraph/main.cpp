@@ -13,8 +13,8 @@ double AVATAR_POS_X = 0.0;
 double AVATAR_POS_Y = 0.0;
 double AVATAR_POS_Z = 0.0;
 
-double phi = M_PI/2.1 + EPSLON;     // camera view: up and down
-double beta = 0;                    // camera view: left to right
+double phi = 1.3 + EPSLON;     // camera view: up and down
+double beta = 0;               // camera view: left to right
 
 double head_theta = 0.0;    // how much the robot nods
 double head_beta = 0.0;     // how much the robot looks left and right
@@ -190,38 +190,12 @@ void display()
     // floor
     drawFloor();
     
-    // mirror: tag
-    // disable buffers
-    glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
-    glDisable(GL_DEPTH_TEST);
-    // enable stencil test
-    glEnable(GL_STENCIL_TEST);
-    glStencilFunc(GL_EQUAL,0,3);
-    glStencilOp(GL_KEEP, GL_KEEP, GL_INCR);
-    // enable face cull
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_BACK);
-    // mirror
-    drawMirror();
-    // disable face cull
-    glDisable(GL_CULL_FACE);
-    // disable stencil test
-    glDisable(GL_STENCIL_TEST);
-    // re-enable buffers
-    glEnable(GL_DEPTH_TEST);
-    glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-    
     // reflect scene: mirror
-    // enable stencil test
-    glStencilFunc(GL_EQUAL,1,3);
-    glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
     glPushMatrix();
-        glTranslatef(-5, 0, 0);
-        glScalef(-1,1,1);
+        glTranslatef(0, 0, -7);
+        glScalef(1,1,-1);
         drawEverythingWithShadow();
     glPopMatrix();
-    // disable stencil test
-    glDisable(GL_STENCIL_TEST);
     
     // mirror
     drawMirror();
@@ -316,6 +290,8 @@ void drawEverythingWithShadow() {
     // enable buffers
     glEnable(GL_DEPTH_TEST);
     glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+    
+
 }
 
 bool LoadGLTextures(char* fname)

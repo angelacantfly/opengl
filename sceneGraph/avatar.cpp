@@ -337,16 +337,16 @@ void drawBillboard() {
     glBegin(GL_QUADS);
         // bottom left corner
         glTexCoord2f(0, 0);
-        glVertex3f(-10, 0, -5);
+        glVertex3f(-20, 0, -5);
         // top left corner
         glTexCoord2f(0, 1);
-        glVertex3f(-10, 10, -5);
+        glVertex3f(-20, 20, -5);
         // top right corner
         glTexCoord2f(1, 1);
-        glVertex3f(10, 10, -5);
+        glVertex3f(20, 20, -5);
         // bottom right corner
         glTexCoord2f(1, 0);
-        glVertex3f(10, 0, -5);
+        glVertex3f(20, 0, -5);
     glEnd();
     glPopMatrix();
     
@@ -355,15 +355,15 @@ void drawBillboard() {
 
 void drawMirror()
 {
+    billboardBegin();
+    
     // blend for reflection
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
     glColor4f(1, 1, 1, 0.5);
-    glPushMatrix();
-    glTranslatef(2, 5, 0);
+    glTranslatef(0, 5, 2);
     glScalef(1, -1, 1);
-    glRotatef(90, 0, 1, 0);
         glBegin(GL_QUADS);
         // bottom left corner
         glVertex3f(-5, 0, -5);
@@ -374,21 +374,25 @@ void drawMirror()
         // bottom right corner
         glVertex3f(5, 0, -5);
         glEnd();
-    glPopMatrix();
     
     // disable reflection
     glDisable(GL_BLEND);
+    
+    billboardEnd();
 }
 
 void drawGenie() {
     // draw genie's body parts + accessories
     // only when in regular view
     if (!robotPerspective) {
+        glPushMatrix();
         glTranslatef(AVATAR_POS_X,0,AVATAR_POS_Z);
+        cout << "Avatar x position: " << AVATAR_POS_X << endl;
+        cout << "Avatar z position: " << AVATAR_POS_Z << endl;
         drawGenieTeapot();
         drawGenieBottom();
         drawGenieMiddle();
         drawHead();
-        glTranslatef(-AVATAR_POS_X,0,-AVATAR_POS_Z);
+        glPopMatrix();
     }
 }

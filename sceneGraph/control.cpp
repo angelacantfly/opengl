@@ -158,15 +158,35 @@ void special(int key, int x, int y)
     switch (key) {
         case GLUT_KEY_LEFT:
             AVATAR_POS_X--;
+            
+            // do not go past left edge of floor
+            if (AVATAR_POS_X <= -9)
+                AVATAR_POS_X = -9;
+            
             break;
         case GLUT_KEY_RIGHT:
             AVATAR_POS_X++;
+            
+            // do not go past right edge of floor
+            if (AVATAR_POS_X >= 9)
+                AVATAR_POS_X = 9;
+            
             break;
         case GLUT_KEY_DOWN:
             AVATAR_POS_Z--;
+            
+            // do not go behind mirror
+            if (AVATAR_POS_Z <= -1)
+                AVATAR_POS_Z = -1;
+            
             break;
         case GLUT_KEY_UP:
             AVATAR_POS_Z++;
+            
+            // do not go past floor
+            if (AVATAR_POS_Z >= 9)
+                AVATAR_POS_Z = 9;
+            
             break;
         default:
             break;
@@ -222,24 +242,41 @@ void keyboard(unsigned char key, int x, int y)
         case 'a':
             // camera spin left
             beta -= (double)CAMERA_SPIN/ (double)windowWidth;
+            
+            if (beta <= -0.4) {
+                beta = -0.4;
+            }
+            
             recalculateCameraPos();
             cout << "spin left: " << beta << endl;
             break;
         case 'A':
             // camera spin left
             beta -= (double)CAMERA_BIG_SPIN/ (double)windowWidth;
+            // cap mirror
+            if (beta <= -0.4) {
+                beta = -0.4;
+            }
             recalculateCameraPos();
             cout << "fast spin left: " << beta << endl;
             break;
         case 'd':
             // camera spin right
             beta += (double)CAMERA_SPIN/ (double)windowWidth;
+            // cap mirror
+            if (beta >= 0.3) {
+                beta = 0.3;
+            }
             recalculateCameraPos();
             cout << "spin right: " << beta << endl;
             break;
         case 'D':
             // camera spin right
             beta += (double)CAMERA_BIG_SPIN/ (double)windowWidth;
+            // cap mirror
+            if (beta >= 0.3) {
+                beta = 0.3;
+            }
             recalculateCameraPos();
             cout << "fast spin right: " << beta << endl;
             break;
@@ -248,6 +285,9 @@ void keyboard(unsigned char key, int x, int y)
             phi -=(double)CAMERA_SPIN/ (double)windowHeight;
             if (phi < 0)
                 phi = 0 + EPSLON;
+            // cap mirror
+            if (phi <= 1.20826)
+                phi = 1.20826;
             recalculateCameraPos();
             cout << "look up: " << phi << endl;
             break;
@@ -256,6 +296,9 @@ void keyboard(unsigned char key, int x, int y)
             phi -=(double)CAMERA_BIG_SPIN/ (double)windowHeight;
             if (phi < 0)
                 phi = 0 + EPSLON;
+            // cap mirror
+            if (phi <= 1.20826)
+                phi = 1.20826;
             recalculateCameraPos();
             cout << "fast look up: " << phi << endl;
             break;
