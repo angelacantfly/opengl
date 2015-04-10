@@ -385,7 +385,10 @@ void drawGenie() {
     if (!robotPerspective) {
         glPushMatrix();
         glTranslatef(AVATAR_POS_X,0,AVATAR_POS_Z);
+        // teapot
         drawGenieTeapot();
+        // body
+        glRotatef(trick, 0, 1, 0);
         drawGenieBottom();
         drawGenieMiddle();
         drawHead();

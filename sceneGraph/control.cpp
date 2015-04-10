@@ -86,7 +86,8 @@ void menu(int item)
         }
         case ROBOT_TRICK:
         {
-            
+            robotTrick = !robotTrick;
+            cout << "The genie is now granting your wish..." << endl;
             break;
         }
         case HELP_CAMERA:
@@ -158,35 +159,27 @@ void special(int key, int x, int y)
     switch (key) {
         case GLUT_KEY_LEFT:
             AVATAR_POS_X--;
-            
             // do not go past left edge of floor
             if (AVATAR_POS_X <= -7)
                 AVATAR_POS_X = -7;
-            
             break;
         case GLUT_KEY_RIGHT:
             AVATAR_POS_X++;
-            
             // do not go past right edge of floor
             if (AVATAR_POS_X >= 7)
                 AVATAR_POS_X = 7;
-            
             break;
         case GLUT_KEY_DOWN:
             AVATAR_POS_Z--;
-            
             // do not go behind mirror
             if (AVATAR_POS_Z <= -1)
                 AVATAR_POS_Z = -1;
-            
             break;
         case GLUT_KEY_UP:
             AVATAR_POS_Z++;
-            
             // do not go past floor
             if (AVATAR_POS_Z >= 9)
                 AVATAR_POS_Z = 9;
-            
             break;
         default:
             break;

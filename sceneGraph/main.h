@@ -23,6 +23,10 @@ extern double AVATAR_POS_Z;
 extern double AVATAR_POS_Y;
 extern const double AVATAR_EYE_POS;
 
+// robot trick
+extern GLfloat trick;
+extern bool lookUp;
+
 // position of camera (user controlled)
 extern double CAMERA_X;
 extern double CAMERA_Z;
@@ -54,12 +58,8 @@ extern bool HEADLAMPSTATUS;
 // toggle view
 extern bool robotPerspective;
 
-enum {
-    JUNCTION = 0,
-    CONTROL1_FOR_JUNCTION = 1,
-    CONTROL2_FOR_JUNCTION = 2,
-    OTHER=3
-};
+// toggle robot trick
+extern bool robotTrick;
 
 // curve
 extern const int numCurves;
@@ -67,9 +67,17 @@ extern const int numPoints;
 extern int currPoint;
 extern int typeCurrPoint;
 
+enum {
+    JUNCTION = 0,
+    CONTROL1_FOR_JUNCTION = 1,
+    CONTROL2_FOR_JUNCTION = 2,
+    OTHER=3
+};
+
 void display(void);
 void reshape(int width, int height);
 void init();
+void idle();
 void menu(int);
 void keyboard(unsigned char key, int x, int y);
 
@@ -78,7 +86,7 @@ void drawGenie();
 void drawEverythingWithShadow();
 
 // texture mapping
-bool LoadGLTextures(char* fname);
+extern bool LoadGLTextures(char* fname);
 
 // roller coaster
 void drawRollerCoaster();

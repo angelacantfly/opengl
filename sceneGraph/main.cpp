@@ -13,6 +13,9 @@ double AVATAR_POS_X = 0.0;
 double AVATAR_POS_Y = 0.0;
 double AVATAR_POS_Z = 0.0;
 
+// robot trick
+GLfloat trick = 0.0;
+
 double phi = 1.3 + EPSLON;     // camera view: up and down
 double beta = 0;               // camera view: left to right
 
@@ -31,6 +34,10 @@ GLfloat lightPosition[]={0,3,0,1};
 
 // toggle camera perspective
 bool robotPerspective = false;
+
+// toggle robot trick
+bool robotTrick = false;
+bool lookUp = true;
 
 // curve
 const int numCurves = 3;              // Controls the number of curves
@@ -68,11 +75,12 @@ int main(int argc, char **argv)
     glutKeyboardFunc(keyboard);
     glutMouseFunc(mouse);
     glutMotionFunc(motion);
+    glutIdleFunc(idle);
     
     // initalize opengl parameters
     init();
     
-    // initialize points
+    // roller coaster: initialize points
     float spread=100;
     for (int i=0; i< numPoints; i++)
         points[i][0]=points[i][1]=points[i][2]=spread/2.0 - spread/(numPoints+1.0) *i;
@@ -90,7 +98,7 @@ void init()
     glLoadIdentity();
     gluPerspective(20.0, 1.0, 1, 100.0);
     glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
+//    glLoadIdentity();
     
     // initialize background color to purple
     glClearColor(0.44,0.24,0.37,0);
@@ -137,6 +145,32 @@ void reshape(int width, int height)
     else
         glViewport(0,0,height,height);
     
+}
+
+void idle()
+{
+    // only perform robot trick when user toggles menu
+    if (robotTrick) {
+        
+        // nod up
+        if (lookUp) {
+            head_theta -= 1;
+            WAVE_UP_DOWN -=2;       // move arms forward
+            if (head_theta <= -60)  // now look down
+                lookUp = !lookUp;
+        }
+        // nod down
+        if (!lookUp) {
+            head_theta += 1;
+            WAVE_UP_DOWN += 2;          // move arms backward
+            if (head_theta > 0)
+                head_theta = 0;
+                if (head_theta == 0)    // now look up
+                    lookUp = !lookUp;
+        }
+        
+        glutPostRedisplay();
+    }
 }
 
 void display()
