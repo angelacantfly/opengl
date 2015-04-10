@@ -32,7 +32,7 @@ void drawFloor()
     glRotatef(-90,1,0,0);
     glNormal3f(0,0,1);
     for (int row = 0 ; row < 9; ++row)
-        for (int col = 0; col < 9; ++ col)
+        for (int col = 0; col < 13; ++ col)
         {
             ++color;
             tileFloor(originx + 2 * row, originy + 2 * col, originx + 2 * (row + 1), originy + 2* (col + 1), color%2, color%2, color%2);
