@@ -87,8 +87,8 @@ void init()
     // set polygon mode
     glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
     
-//    glEnable(GL_CULL_FACE);
-//    glCullFace(GL_BACK);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
     
     // initialize stencil clear value
     glClearStencil(0.0);
@@ -192,7 +192,11 @@ void display()
     //enable buffers
     glDisable(GL_STENCIL_TEST);
     
+    glEnable(GL_STENCIL_TEST);
+    glStencilFunc(GL_EQUAL, 1, 3);
+    glStencilOp(GL_KEEP,GL_KEEP,GL_KEEP);
     drawCube();
+    glDisable(GL_STENCIL_TEST);
     
     glDisable(GL_POLYGON_OFFSET_FILL);
 

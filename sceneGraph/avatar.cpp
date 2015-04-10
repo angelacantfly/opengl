@@ -41,7 +41,6 @@ void drawFloor()
 
     // stop blend for reflection
     glDisable(GL_BLEND);
-    
 }
 
 void tileFloor(double x1, double y1, double x2, double y2, double r, double g, double b)
@@ -49,7 +48,6 @@ void tileFloor(double x1, double y1, double x2, double y2, double r, double g, d
     glColor4f(r, g, b, 0.5);
     glRectf(x1, y1, x2, y2);
 }
-
 
 void drawArm(bool isLeft) {
     glColor3f(1,1,1);

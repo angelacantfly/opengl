@@ -98,10 +98,13 @@ void init()
     glLoadIdentity();
     gluPerspective(20.0, 1.0, 1, 100.0);
     glMatrixMode(GL_MODELVIEW);
-//    glLoadIdentity();
+    
+    // initialize clear colors
+    glClearColor(0,0,0,0);
     
     // initialize background color to purple
     glClearColor(0.44,0.24,0.37,0);
+    
     // initialize shade model to smooth
     glShadeModel(GL_SMOOTH);
     
@@ -246,64 +249,64 @@ void display()
 }
 
 void drawEverythingWithShadow() {
-//    glEnable(GL_POLYGON_OFFSET_FILL);
-//    glPolygonOffset(-1,-1);
-//
-//    // disable buffers
-//    glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
-//    glDisable(GL_DEPTH_TEST);
-//    // enable stencil test
-//    glEnable(GL_STENCIL_TEST);
-//    glStencilFunc(GL_EQUAL,0,3);
-//    glStencilOp(GL_KEEP, GL_KEEP, GL_INCR);
-//    // enable face cull
-//    glEnable(GL_CULL_FACE);
-//    glCullFace(GL_BACK);
-//
-//    // draw floor
-//    float floorDiffuse[]={1.0,0.0,0.5};
-//    float floorAmbient[]={1.0,0.0,0.5};
-//    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, floorDiffuse);
-//    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, floorDiffuse);
-//    drawFloor();
-//
-//    // enable buffers
-//    glEnable(GL_DEPTH_TEST);
-//    // disable stencil test
-//    glDisable(GL_STENCIL_TEST);
-//    glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-//    // disable face cull
-//    glDisable(GL_CULL_FACE);
-//    
-//    // enable stencil test: shadow
-//    glEnable(GL_STENCIL_TEST);
-//    glStencilFunc(GL_EQUAL, 1, 3);
-//    glStencilOp(GL_KEEP,GL_KEEP,GL_KEEP);
-//    
-//    // shadow
-//    GLfloat shadowMat[16];
-//    GLfloat groundplane[4]={0,1,0,0};
-//    shadowMatrixPointLight(shadowMat, groundplane, lightPosition);
-//    glPushMatrix();
-//    glMultMatrixf(shadowMat);
-//    GLfloat black[4]={0,0,0,0};
-//    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, black);
-//    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, black);
-//    drawGenie();
-//    glPopMatrix();
-//    
-//    // disable stencil test: shadow
-//    glDisable(GL_STENCIL_TEST);
-//
-//    
-//    glDisable(GL_POLYGON_OFFSET_FILL);
+    glEnable(GL_POLYGON_OFFSET_FILL);
+    glPolygonOffset(-1,-1);
+
+    // disable buffers
+    glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+    glDisable(GL_DEPTH_TEST);
+    // enable stencil test
+    glEnable(GL_STENCIL_TEST);
+    glStencilFunc(GL_EQUAL,0,3);
+    glStencilOp(GL_KEEP, GL_KEEP, GL_INCR);
+    // enable face cull
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
+
+    // draw floor
+    float floorDiffuse[]={1.0,0.0,0.5};
+    float floorAmbient[]={1.0,0.0,0.5};
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, floorDiffuse);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, floorDiffuse);
+    drawFloor();
+
+    // enable buffers
+    glEnable(GL_DEPTH_TEST);
+    // disable stencil test
+    glDisable(GL_STENCIL_TEST);
+    glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+    // disable face cull
+    glDisable(GL_CULL_FACE);
+    
+    // enable stencil test: shadow
+    glEnable(GL_STENCIL_TEST);
+    glStencilFunc(GL_EQUAL, 1, 3);
+    glStencilOp(GL_KEEP,GL_KEEP,GL_KEEP);
+    
+    // shadow
+    GLfloat shadowMat[16];
+    GLfloat groundplane[4]={0,1,0,0};
+    shadowMatrixPointLight(shadowMat, groundplane, lightPosition);
+    glPushMatrix();
+    glMultMatrixf(shadowMat);
+    GLfloat black[4]={0,0,0,0};
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, black);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, black);
+    drawGenie();
+    glPopMatrix();
+    
+    // disable stencil test: shadow
+    glDisable(GL_STENCIL_TEST);
+
+    
+    glDisable(GL_POLYGON_OFFSET_FILL);
 
     drawGenie();
     drawMagicBall();
     
     // floor: tag
-    float floorDiffuse[]={1.0,0.0,0.0};
-    float floorAmbient[]={1.0,0.0,0.0};
+//    float floorDiffuse[]={1.0,0.0,0.0};
+//    float floorAmbient[]={1.0,0.0,0.0};
     glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, floorDiffuse);
     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, floorAmbient);
     // disable buffers
