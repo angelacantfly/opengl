@@ -83,7 +83,7 @@ void keyboard(unsigned char key, int x, int y);
 
 // robots
 void drawGenie();
-void drawEverythingWithShadow();
+void drawScene();
 
 // texture mapping
 extern bool LoadGLTextures(char* fname);
