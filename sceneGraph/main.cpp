@@ -199,7 +199,7 @@ void display()
         GLfloat headLampY = 1.9 * 1.0 + length* cos((head_theta + angle)/180 * M_PI);
         GLfloat headLampZ = AVATAR_POS_Z  + 0.7 * sin((head_theta+ angle)/180 * M_PI)* cos(head_beta/180 * M_PI) ;
         
-        gluLookAt(headLampX, headLampY + 2, headLampZ, headLampX , 0, headLampZ + 3, 0, 1,0);
+        gluLookAt(headLampX, headLampY + 2, headLampZ, headLampX + sin(head_beta/180*M_PI) , headLampY -1 , headLampZ + 5, 0, 1,0);
     }
     
     // clear buffers

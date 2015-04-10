@@ -201,22 +201,26 @@ void keyboard(unsigned char key, int x, int y)
         case 'c':
             // nod down
             head_theta += 5;
-            if (head_theta > 90)
-                head_theta = 90;
+            if (head_theta > 45)
+                head_theta = 45;
             break;
         case 'C':
             // nod up
             head_theta -= 5;
-            if (head_theta < -90)
-                head_theta = -90;
+            if (head_theta < -45)
+                head_theta = -45;
             break;
         case 'v':
             // head turn left
             head_beta -= 5;
+            if (head_beta < -90)
+                head_beta = -90;
             break;
         case 'V':
             // head turn right
             head_beta += 5;
+            if (head_beta > 90)
+                head_beta = 90;
             break;
         case 'Z':
             // zoom in
