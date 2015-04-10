@@ -201,6 +201,7 @@ void display()
         
         gluLookAt(headLampX, headLampY + 2, headLampZ, headLampX + sin(head_beta/180*M_PI) , headLampY -1 , headLampZ + 5, 0, 1,0);
     }
+    //????
     
     // clear buffers
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
