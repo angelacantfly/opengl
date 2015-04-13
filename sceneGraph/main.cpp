@@ -40,7 +40,9 @@ bool robotTrick = false;
 bool lookUp = true;
 
 // curve
-const int numCurves = 3;              // Controls the number of curves
+bool RCMODE = false;
+int currentCoastStop = 0;
+const int numCurves = 8;              // Controls the number of curves
 const int numPoints = 3*numCurves+1;  // DO NOT CHANGE THIS
 float points[numPoints][3];
 int currPoint=0;
@@ -81,9 +83,12 @@ int main(int argc, char **argv)
     init();
     
     // roller coaster: initialize points
-    float spread=100;
-    for (int i=0; i< numPoints; i++)
-        points[i][0]=points[i][1]=points[i][2]=spread/2.0 - spread/(numPoints+1.0) *i;
+//    float spread=100;
+//    for (int i=0; i< numPoints; i++)
+//        points[i][0]=points[i][1]=points[i][2]=spread/2.0 - spread/(numPoints+1.0) *i;
+//    setupPoints();
+    setupCoasterStops();
+    
     
     // loop until something happens
     glutMainLoop();
@@ -137,7 +142,7 @@ void init()
     // texture mapping: magic ball
     LoadGLTextures("/Users/maureennaval/Desktop/opengl/sceneGraph/magicBall-01.png");
     
-    drawFog();
+//    drawFog();
 }
 
 
@@ -187,11 +192,18 @@ void display()
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     
+    
+    if (RCMODE)
+    {
+        gluLookAt(points[currentCoastStop][0], points[currentCoastStop][1], points[currentCoastStop][2], AVATAR_POS_X, AVATAR_POS_Y+1, AVATAR_POS_Z, 0, 1, 0);
+    }
     // regular camera view
-    if (!robotPerspective) {
+    else if (!robotPerspective) {
+        // view world from the robot's perspective
         gluLookAt(CAMERA_X, CAMERA_Y, CAMERA_Z, 0, 0, 0, 0, 1, 0);
-    // view world from the robot's perspective
-    } else {
+        
+    }
+    else {
         GLfloat angle = atan2f(0.25, 0.5) *180/M_PI;
         GLfloat length = 0.6;
         
@@ -201,7 +213,7 @@ void display()
         
         gluLookAt(headLampX, headLampY + 2, headLampZ, headLampX + sin(head_beta/180*M_PI) , headLampY -1 , headLampZ + 5, 0, 1,0);
     }
-    //????
+    
     
     // clear buffers
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
@@ -431,3 +443,77 @@ void drawFog()
     glHint(GL_FOG_HINT, GL_DONT_CARE);
 }
 
+
+void setupPoints()
+{
+    // P0
+    points[0][0] = 0.0;
+    points[0][1] = 0.0;
+    points[0][2] = 0.0;
+    
+    // P1
+    points[1][0] = 0.0;
+    points[1][1] = 1.0;
+    points[1][2] = -3.0;
+    
+    // P2
+    points[2][0] = 6.0;
+    points[2][1] = 3.0;
+    points[2][2] = -1.0;
+    
+    // P3
+    points[3][0] = 10.0;
+    points[3][1] = 6.0;
+    points[3][2] = 0.0;
+    
+    // P4
+    points[4][0] = 5.0;
+    points[4][1] = 5.0;
+    points[4][2] = 5.0;
+    
+    // P5
+    points[5][0] = 3;
+    points[5][1] = 3.0;
+    points[5][2] = 5;
+    
+    // P6
+    points[6][0] = 0.0;
+    points[6][1] = 1.0;
+    points[6][2] = 7.0;
+    
+    // P7
+    points[7][0] = -3.0;
+    points[7][1] = 1.0;
+    points[7][2] = 6.0;
+    
+    // P8
+    points[8][0] = -5.0;
+    points[8][1] = 1.0;
+    points[8][2] = 6.0;
+    
+    // p9
+    points[9][0] = -8.0;
+    points[9][1] = 1.0;
+    points[9][2] = 0.0;
+}
+void setupCoasterStops(){
+    // p0 - p5
+    float maxHeight;
+    for (int i = 0; i < 12; ++i) {
+        points[i][0] = 0;
+        points[i][1] = maxHeight = 0.3 *powf(((float) i)/2.0, 2.0);
+        points[i][2] = - ((float) i)/2.0;
+    }
+    
+    points[12][0] = 1; points[12][1] = maxHeight; points[12][2] = points[11][2] + 1;
+    points[13][0] = 3; points[13][1] = maxHeight; points[13][2] = points[12][2] + 1;
+    points[14][0] = 5; points[14][1] = maxHeight; points[14][2] = points[13][2] + 1;
+    
+    for (int i = 15; i < 25; ++i) {
+        float f = ((float) i)/2.0;
+        points[i][0] = f-5 + 0.3* powf(f-3, 1.5) ;
+        points[i][1] = maxHeight;
+        points[i][2] = 0.5 * powf(f - 5, 2);
+    }
+    
+}

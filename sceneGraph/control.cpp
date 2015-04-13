@@ -105,7 +105,9 @@ void menu(int item)
             w              look up\n\
             W              fast look up\n\
             s              look down\n\
-            S              fast look down"
+            S              fast look down\n\
+            r              get on the rollercoaster\n\
+            t              move on to the next point on the rollercoaster."
             << endl;
             break;
         }
@@ -239,7 +241,6 @@ void keyboard(unsigned char key, int x, int y)
         case 'a':
             // camera spin left
             beta -= (double)CAMERA_SPIN/ (double)windowWidth;
-            
             if (beta <= -0.4) {
                 beta = -0.4;
             }
@@ -261,6 +262,7 @@ void keyboard(unsigned char key, int x, int y)
             // camera spin right
             beta += (double)CAMERA_SPIN/ (double)windowWidth;
             // cap mirror
+
             if (beta >= 0.3) {
                 beta = 0.3;
             }
@@ -324,6 +326,28 @@ void keyboard(unsigned char key, int x, int y)
             break;
         case 'K':
             WAVE_UP_DOWN +=5;
+            break;
+        case 'r':
+            RCMODE = !RCMODE;
+            if (RCMODE)
+                cout << "Starting the roller coaster adventure.."<<endl;
+            else
+                cout << "Getting off the roller coaster.."<<endl;
+            break;
+        case 't':
+            if (RCMODE) {
+                cout << "traveling to the next stop..."<<endl;
+                currentCoastStop +=1;
+                if (currentCoastStop > numPoints -1) {
+                    cout << "the end of the ride!" << endl;
+                    RCMODE = !RCMODE;
+                }
+            }
+            else {
+                cout<< "You need to get on the coaster first! press r to do so." <<endl;
+            }
+            
+            
             break;
         default:
             break;

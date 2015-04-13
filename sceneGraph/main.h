@@ -62,6 +62,8 @@ extern bool robotPerspective;
 extern bool robotTrick;
 
 // curve
+extern bool RCMODE;
+extern int currentCoastStop;
 extern const int numCurves;
 extern const int numPoints;
 extern int currPoint;
@@ -89,6 +91,8 @@ void drawScene();
 extern bool LoadGLTextures(char* fname);
 
 // roller coaster
+void setupPoints();
+void setupCoasterStops();
 void drawRollerCoaster();
 void drawCurve(int startPoint);
 
