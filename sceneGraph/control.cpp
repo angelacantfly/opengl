@@ -340,6 +340,7 @@ void keyboard(unsigned char key, int x, int y)
                 currentCoastStop +=1;
                 if (currentCoastStop > numPoints -1) {
                     cout << "the end of the ride!" << endl;
+                    currentCoastStop = 0;
                     RCMODE = !RCMODE;
                 }
             }
